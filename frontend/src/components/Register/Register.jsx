@@ -99,6 +99,7 @@ const Register = () => {
                                     placeholder="Enter your Name"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                    required="required"
                                 />
                             </div>
                         </div>
@@ -124,6 +125,7 @@ const Register = () => {
                                     placeholder="Enter your Email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    required="required"
                                 />
                             </div>
                         </div>
@@ -137,6 +139,7 @@ const Register = () => {
                                     placeholder="Enter Your Mobile Number"
                                     value={mobileNumber}
                                     onChange={(e) => setMobileNumber(e.target.value)}
+                                    required="required"
                                 />
                             </div>
                         </div>
@@ -150,6 +153,7 @@ const Register = () => {
                                     placeholder="Enter Your Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    required="required"
                                 />
                             </div>
                         </div>
