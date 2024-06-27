@@ -4,4 +4,6 @@ const userController = require('../controllers/userController')
 
 router.post('/register', userController.upload.single('image'), userController.register);
 
+router.post('/login', userController.login);
+
 module.exports = router;
