@@ -94,9 +94,28 @@ const login = async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
 }
+
+// Endpoint for fetching user information
+const authenticateToken = async (req, res) => {
+    const userId = req.userId;
+    User.findById(userId)
+        .then(user => {
+            if(!user){
+                return res.status(404).send({ error: 'User not found' });
+            }
+            res.send(user)
+        })
+
+        .catch(err => {
+          res.status(500).send({ error: 'Internal server error' });
+        });
+    
+}
   
 module.exports = {
     register,
     upload,
-    login
+    login,
+    authenticateToken,
+    verifyToken
 }

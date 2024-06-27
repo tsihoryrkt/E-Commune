@@ -10,6 +10,7 @@ require('./models/dbConnection')
 
 const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
 
 // Middleware
 app.use(bodyParser.json()); // analysing the request body
@@ -20,8 +21,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // routes
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 module.exports = app;
