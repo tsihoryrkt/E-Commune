@@ -53,9 +53,9 @@ const Account = () => {
         };
         getUserData();
 
-    }, [navigate]);
+    },[navigate]);
 
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div>mivrin   Error: {error}</div>;
     if (!userData) return <div>No user data available</div>;
 
     
@@ -67,35 +67,28 @@ const Account = () => {
 
     const updateProfile = async (e) => {
         e.preventDefault();
-        
         const formData = new FormData();
         formData.append('name', name);
         formData.append('email', email);
         formData.append('mobileNumber', mobileNumber);
-
+        
         if (image) {
             formData.append('image', image);
-        }
-
-        const token = localStorage.getItem('token');
-
-        try {
-            const response = await updateUserProfile(token, formData);
-
-
-            if (response.status === 200){
-                setErrorMessage('');
+            }
+            
+            
+            const token = localStorage.getItem('token');
+            try {
+                await updateUserProfile(token, formData);
                 setSuccessMessage('Update successful');
                 window.alert('Profile updated successfully');
-                navigate('/account');
-            } 
-            else {// update failed, showing an error message
-                setErrorMessage(response.data.error || 'Authentication failed');
+                setTimeout(() => {
+                    navigate('/account');
+                }, 1000);
+            } catch (error) {
+                setErrorMessage(error.response?.data?.message || 'Authentication failed');
                 setSuccessMessage('');
             }
-        } catch (error) {
-            setError(error.response?.data?.message || 'An error occurred. Please try again.');
-        }
     };
 
 

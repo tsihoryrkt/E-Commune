@@ -107,15 +107,46 @@ const authenticateToken = async (req, res) => {
         })
 
         .catch(err => {
-          res.status(500).send({ error: 'Internal server error' });
+            res.status(500).send({ error: 'Internal server error' });
         });
     
 }
+
+// Endpoint for updating user information
+const updateUserProfile = async (req, res) => {
+    const userId = req.userId;
+    try {
+        
+          const user = await User.findById(userId);  
+          if(!user){
+              console.log('user not found for ID ' + userId);
+              return res.status(404).send({ error: 'User not found' });
+          } 
+            
+            user.name = req.body.name || user.name;
+            user.email = req.body.email || user.email;
+            user.mobileNumber = req.body.mobileNumber || user.mobileNumber;
+
+            if(req.file){
+                user.image = req.file.filename;
+            }
+            
+            const updatedUser = await user.save();
+            res.send({ message: 'User profile updated successfully', user: updatedUser});
+            
+        }
+            
+        catch(error) {
+            res.status(500).send({ error: 'Internal server error' });
+        };
+}
+              
   
 module.exports = {
     register,
-    upload,
     login,
+    upload,
+    verifyToken,
     authenticateToken,
-    verifyToken
+    updateUserProfile
 }
