@@ -4,6 +4,7 @@ import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
 import Account from "./components/Account/Account";
+import Project from "./components/Project/Project";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" Component={Login}/>
         <Route path="/home" Component={Home}/>
         <Route path="/account" Component={Account}/>
+        <Route path="/project" Component={Project}/>
       </Routes>
     </Router>
   );
