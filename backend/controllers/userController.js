@@ -96,7 +96,7 @@ const login = async (req, res) => {
 }
 
 // Endpoint for fetching user information
-const authenticateToken = async (req, res) => {
+const fetchUser = async (req, res) => {
     const userId = req.userId;
     User.findById(userId)
         .then(user => {
@@ -139,7 +139,27 @@ const updateUserProfile = async (req, res) => {
         catch(error) {
             res.status(500).send({ error: 'Internal server error' });
         };
+
 }
+
+// Endpoint for searching user
+const searchUser = async (req, res) => {
+  console.log('tonga atu ve e');
+    const searchTerm = req.query.searchTerm;
+    try {
+        const user = await User.find({
+            $or: [
+                {name: { $regex: searchTerm, $options: 'i'}}, // Case sensitive by name
+                {email: { $regex: searchTerm, $options: 'i'}} // Case sensitive by email
+            ]
+        });
+        res.send(user);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+} 
+
               
   
 module.exports = {
@@ -147,6 +167,7 @@ module.exports = {
     login,
     upload,
     verifyToken,
-    authenticateToken,
-    updateUserProfile
+    fetchUser,
+    updateUserProfile,
+    searchUser
 }

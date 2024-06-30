@@ -169,7 +169,7 @@ img{
     color: #233975;
 }
 
-.LoginPage .container .formDiv .form .errMess{
+.LoginPage .container .formDiv .errMess{
     background: rgba(255, 255, 255, 0.7);
     display: flex;
     justify-content: center;
@@ -183,9 +183,12 @@ img{
     left: 0.5rem;
     right: 0.5rem;
     backdrop-filter: blur(1px);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
 }
 
-.LoginPage .container .formDiv .form .succMess{
+.LoginPage .container .formDiv .succMess{
     background: rgba(255, 255, 255, 0.7);
     display: flex;
     justify-content: center;
@@ -199,4 +202,43 @@ img{
     left: 0.5rem;
     right: 0.5rem;
     backdrop-filter: blur(1px);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
+}
+
+.LoginPage .container .formDiv .shift {
+    transform: translateY(-20px);
+    animation: slideInform 0.5s forwards, fadeOutform 0.5s 3.5s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes slideInform {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutform {
+    to {
+        transform: translateY(-20px);
+    }
 }

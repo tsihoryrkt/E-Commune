@@ -1,6 +1,8 @@
 import React, { useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+
 
 // import assets
 import '../../assets/css/Home.css';
@@ -53,13 +55,35 @@ const Home = () => {
             navigate('/login');
         }, 2000);
     };
-    const handleAccount = () => {
-        navigate('/account');
-    }
 
     return (
         <div className="HomePage">
             <div className="container-fluid">
+                <Navbar className="" expand="lg">
+                    <Container>    
+                        <Navbar.Brand href="/home">E-Commune</Navbar.Brand>
+                        
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />                    
+                        
+                        <Navbar.Collapse id="basic-navbar-nav">
+                                
+                            <Nav className="me-auto">
+                                {userData.isAdmin && (
+                                    <Nav.Link href="/project" className="text-dark">Project</Nav.Link>
+                                )}
+                                {userData.isAdmin && (
+                                    <Nav.Link href="/task" className="text-dark">Tasks</Nav.Link>
+                                )}
+                            </Nav>
+                            <Nav>
+                                <Nav.Link href="/account" className="text-dark">Account</Nav.Link>
+                                <Nav.Link onClick={handleLogout} className="text-dark">Logout</Nav.Link>
+                            </Nav>
+                        </Navbar.Collapse>
+
+                    </Container>
+                </Navbar>
+
                 <div className="row">
                     <div className="col-sm-4 col-md-3 vh-100">
                         <div className="mt-4 mb-4 text-center userProfile">
@@ -76,32 +100,27 @@ const Home = () => {
                             <div className="text-center mt-3 mb-3">
                                 <div className="mt-3 mb-3" id="login_user_name">{ userData.name }</div>
                             </div>
-                            <div className="text-center mt-3 mb-3">
-                                <button className="btn btn-secondary btn-sm mx-1" onClick={handleAccount}>Account</button>
-                                <button className="btn btn-primary btn-sm mx-1" onClick={handleLogout}>Logout</button>
-                            </div>
                         </div>
                         <hr className="bg-secondary border-2 border-top border-secondary" />
                         <div className="mt-4 mb-4 overflow-auto">
-                            <h6 className="border-bottom pb-2 mb-0">Mila asina zavatra ato</h6>
+                            <h6 className="border-bottom pb-2 mb-0">Mes projets</h6>
                             {error && <p style={{ color: 'red' }}>{error}</p>}
                         </div>
                     </div>
 
                     <div className="mb-4 col-md-6 vh-100 mainBoard">
-                        <h3>welcome to project management</h3>
                         
         
                     </div>
 
                     <div className="col-sm-4 col-md-3 vh-100 border-start">
                         <div className="pt-4 pb-4 h-50 overflow-auto">
-                            <h6 className="mb-3">ato ko mila apina adikle</h6>
+                            <h6 className="mb-3">Contributor</h6>
 
                         </div>
 
                         <div className="pt-4 pb-4 h-50 overflow-auto">
-                            <h6 className="mb-3">de mbola eto ko ry se an</h6>
+                            <h6 className="mb-3">Statistics</h6>
                         </div>
                     </div>
                 </div>

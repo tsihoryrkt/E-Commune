@@ -20,7 +20,8 @@ li{
     background: linear-gradient(to top,#ffffff, #4AA2CC,#006FB6,#005EB6, #004FAB);    
 }
 .HomePage .userProfile img{
-    width: 250px;
+    width: 150px;
+    height: 150px;
 }
 
 .HomePage .userProfile #login_user_name{
@@ -30,8 +31,6 @@ li{
 }
 
 .HomePage .mainBoard{
-    display: flex;
-    justify-content: center;
 }
 
 .HomePage .mainBoard h3{

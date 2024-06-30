@@ -16,6 +16,121 @@ li{
     list-style: none;
 }
 
-.AccountPage .setting .formDiv form .row .col-md-6 .form-floating span img{
+.AccountPage .container .setting .formDiv form .row .col-md-6 .form-floating span img{
     width: 100px;
 }
+
+.AccountPage .container .personnel .userList{
+    flex: 1;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.AccountPage .container .personnel .userInfo{
+    flex: 1;
+}
+
+.AccountPage .container .setting .errMess{
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-size: 20px;
+    border-radius: 5px;
+    gap: 5rem;
+    padding: 0 1rem;
+    height: 60px;
+    left: 0.5rem;
+    right: 0.5rem;
+    backdrop-filter: blur(1px);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
+}
+
+.AccountPage .container .setting .succMess{
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-size: 20px;
+    border-radius: 5px;
+    gap: 5rem;
+    padding: 0 1rem;
+    height: 60px;
+    left: 0.5rem;
+    right: 0.5rem;
+    backdrop-filter: blur(1px);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.AccountPage .container .personnel .userList img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.AccountPage .container .personnel .userList .input-container{
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+}
+
+.AccountPage .container .personnel .userList .input-container input{
+    border: none;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    position: relative;
+}
+
+.AccountPage .container .personnel .userList .input-container input:focus{
+    color: #495057;
+    background-color: #fff;
+}
+.AccountPage .container .personnel .userList .input-container .search-button{
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.AccountPage .container .personnel .userInfo img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+

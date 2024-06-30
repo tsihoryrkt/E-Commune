@@ -27,6 +27,7 @@ const Register = () => {
     const navigate = useNavigate();
     
     const handleSubmit = async (e) => {
+        setErrorMessage('');
         e.preventDefault();
 
         const formData = new FormData();
@@ -41,7 +42,7 @@ const Register = () => {
             const response = await registerUser(formData);
             if (response.status === 200) {
                 setSuccessMessage(`Welcome to E-commune ${name}, please login`);
-                window.alert(`${name}, registration successfuly`);
+    
                 setErrorMessage('');
                 setTimeout(() => {
                     setName('');
@@ -86,9 +87,9 @@ const Register = () => {
                         <h3>Register</h3>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="form grid">
-                    {errorMessage && <p className="mt-3 text-danger">{errorMessage}</p>}
-                    {successMessage && <p className="mt-3 text-success">{successMessage}</p>}
+                    {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
+                    {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
+                    <form onSubmit={handleSubmit} className={`form grid ${errorMessage || successMessage ? 'shift' : ''}`}>
                         <div className="form-group">
                             <label>Enter Name</label>
                             <div className="input flex">

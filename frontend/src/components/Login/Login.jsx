@@ -21,6 +21,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
 
         try {
             const response = await loginUser({ email, password });
@@ -29,13 +30,9 @@ const Login = () => {
                 setSuccessMessage('Authentication successful');
                 setErrorMessage('');
                 
-                const { token, isAdmin } = response.data;
+                const { token } = response.data;
                 localStorage.setItem('token', token); // Stocking token inside localStorage
-                if (isAdmin) {
-                    window.alert('Welcome Project Manager, you are logged in');
-                } else {
-                    window.alert('Welcome, you are logged in');
-                }
+    
                 setTimeout(() => {
                     navigate('/home'); // Redirection to page Home after connexion
                 }, 3000);
@@ -77,10 +74,10 @@ const Login = () => {
                         <img src={mada} alt="mada" />
                         <h3>Login</h3>
                     </div>
-
-                    <form onSubmit={handleSubmit} className="form grid">
-                        {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
-                        {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}   
+                    {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
+                    {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
+                           
+                    <form onSubmit={handleSubmit} className={`form grid ${errorMessage || successMessage ? 'shift' : ''}`}>
                         <div className="form-group">
                             <label>Email Address</label>
                             <div className="input flex">
