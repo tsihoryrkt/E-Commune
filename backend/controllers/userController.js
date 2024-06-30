@@ -144,7 +144,6 @@ const updateUserProfile = async (req, res) => {
 
 // Endpoint for searching user
 const searchUser = async (req, res) => {
-  console.log('tonga atu ve e');
     const searchTerm = req.query.searchTerm;
     try {
         const user = await User.find({
@@ -158,7 +157,27 @@ const searchUser = async (req, res) => {
     catch (error) {
         res.status(500).json({ message: error.message });
     }
-} 
+}
+
+// Endpoint for deleding user
+const deleteUser = async (req, res) => {
+    const userId = req.params.userId;
+    console.log('here are e ' + userId);
+
+    try{
+        const user = await User.findById(userId);
+        
+        if(!user){
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        await User.findByIdAndDelete(userId);
+        res.status(200).json({ message: 'User deleted successfully'});
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
               
   
@@ -169,5 +188,6 @@ module.exports = {
     verifyToken,
     fetchUser,
     updateUserProfile,
-    searchUser
+    searchUser,
+    deleteUser
 }

@@ -11,6 +11,7 @@ import '../../assets/css/Account.css';
 import fetchUserData from "../../services/homeService";
 import { updateUserProfile } from '../../services/accountService';
 import { searchPersonnel } from '../../services/accountService';
+import { deletePersonnel } from "../../services/accountService";
 
 const Account = () => {
     const [ userData, setUserData ] = useState(null);
@@ -125,6 +126,27 @@ const Account = () => {
 
     const handleUserClick = (user) => {
         setSelectedUser(user);
+    };
+
+    const handleDeletePersonnel = async (userId) => {
+        const token = localStorage.getItem('token');
+        setSuccessMessage('');
+        setErrorMessage();
+
+        try {
+            await deletePersonnel(token, userId);
+            setSelectedUser(null);
+            setSuccessMessage('User deleted successfully');
+
+            const updatedUsers = await searchPersonnel(token, searchTerm);
+            setAllUsers(updatedUsers);
+            setSearchResults('');
+            setSearchTerm('');
+            setSelectedUser(null);
+        } catch (error) {
+            setErrorMessage(error.response?.data?.message || 'Failed to delete user');
+            setSuccessMessage('');
+        }
     };
 
     return (
@@ -270,7 +292,11 @@ const Account = () => {
                                                                 </div>
                                                                 
                                                                 {userData.isAdmin && (
-                                                                    <button className="btn btn-danger">Delete</button>
+                                                                    <button 
+                                                                        className="btn btn-danger"
+                                                                        onClick={() => handleDeletePersonnel(user._id)}
+                                                                    >Delete
+                                                                    </button>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -298,7 +324,7 @@ const Account = () => {
                                         <p><strong>Mobile Number:</strong> {selectedUser.mobileNumber}</p>
                                         <img src={`${baseUrl}/${selectedUser.image}`} alt={`${selectedUser.name}'s profile`} className="img-fluid img-thumbnail rounded-circle mb-3" />
                                         {userData.isAdmin && (
-                                            <button className="btn btn-danger">Delete</button>
+                                            <button className="btn btn-danger" onClick={() => (handleDeletePersonnel(selectedUser._id))}>Delete</button>
                                         )}
                                     </div>
                                 )

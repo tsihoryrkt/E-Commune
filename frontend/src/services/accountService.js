@@ -38,7 +38,7 @@ export const searchPersonnel = async (token, searchTerm) => {
 }
 
 
-export const deleteUser = async (token, userId) => {
+export const deletePersonnel = async (token, userId) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
