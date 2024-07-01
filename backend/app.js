@@ -8,9 +8,10 @@ const app = express();
 
 require('./models/dbConnection')
 
-const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
+const projectRouter = require('./routes/project');
 
 // Middleware
 app.use(bodyParser.json()); // analysing the request body
@@ -27,5 +28,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/project', projectRouter);
 
 module.exports = app;

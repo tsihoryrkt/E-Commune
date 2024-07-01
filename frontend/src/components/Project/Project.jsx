@@ -71,7 +71,7 @@ const Project = () => {
         }, 2000);
     };
 
-    const handleCreateUser = async (e) => {
+    const handleCreateProject = async (e) => {
         setErrorMessage('');
         setSuccessMessage('');
         e.preventDefault();
@@ -80,18 +80,26 @@ const Project = () => {
         formData.append('name', name);
         formData.append('description', description);
         formData.append('endDate', endDate);
+        
 
         const token = localStorage.getItem('token');
 
         try {
-            await createProject(token, formData);
-                setErrorMessage('');
-                setSuccessMessage('Project created successfully');
-                setTimeout(() => {
-                    setName('');
-                    setDescription('');
-                    setEndDate('');
-                }, 2000);
+
+            const response = await createProject(token, formData);
+                if (response.status === 200) {
+                    setErrorMessage('');
+                    setSuccessMessage('Project created successfully');
+                    setTimeout(() => {
+                        setName('');
+                        setDescription('');
+                        setEndDate('');
+                    }, 2000);
+                }
+                else {
+                    setSuccessMessage('');
+                    setErrorMessage('failed to create project');
+                }
         }
         catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
@@ -139,7 +147,7 @@ const Project = () => {
                             <h1 className="display-6 fw-bold mb-4 mt-2 text-center">New Project</h1>
                             {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
                             {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
-                            <form onSubmit={handleCreateUser} className="p-4 p-md-5 border rounded-3 bg-light">
+                            <form onSubmit={handleCreateProject} className="p-4 p-md-5 border rounded-3 bg-light">
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-floating mb-3">
