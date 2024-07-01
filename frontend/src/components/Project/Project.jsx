@@ -10,6 +10,8 @@ import '../../assets/css/Project.css';
 // import service
 import fetchUserData from "../../services/homeService";
 import { createProject } from "../../services/projectService";
+import { searchProject } from "../../services/projectService";
+import { deleteProject } from "../../services/projectService";
 
 const Project = () => {
 
@@ -29,7 +31,7 @@ const Project = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState('');
     const [allProjects, setAllProjects] = useState([]);
-    const [selecteProject, setSelectedProject] = useState(null);
+    const [selectedProject, setSelectedProject] = useState(null);
 
     
     useEffect(() => {
@@ -46,6 +48,9 @@ const Project = () => {
 
                 // state initiate with the user data achieved
                 setUserData(data);
+
+                const allProjetcs = await searchProject(token, '');
+                setAllProjects(allProjetcs);
             }
             
             catch (error) {
@@ -113,6 +118,38 @@ const Project = () => {
 
     };
 
+    const HandlesearchProject = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const results = await searchProject(token, searchTerm);
+            setSearchResults(results);
+        }
+        catch (error) {
+            setErrorMessage('Error searching users: ', error);
+        };
+    };
+
+    const handleDeleteProject = async (projectId) => {
+        const token = localStorage.getItem('token');
+        setSuccessMessage('');
+        setErrorMessage('');
+
+        try {
+            await deleteProject(token, projectId);
+            setSuccessMessage('Project deleted successfully');
+
+            const updatedProject = await searchProject(token, searchTerm);
+            setAllProjects(updatedProject);
+            setSearchResults('');
+            setSearchTerm('');
+
+        } catch (error) {
+            setErrorMessage(error.response?.data?.message || 'Failed to delete Project');
+            setSuccessMessage('');
+        }
+        
+    }
+
     return (
         <div className="ProjectPage">
             <div className="container">
@@ -141,7 +178,7 @@ const Project = () => {
 
                     </Container>
                 </Navbar>
-                <div className="container-fluid d-flex justify-content-center align-items-center">
+                <div className="container-fluid d-flex justify-content-between align-items-center">
                     <div className="container-fluid d-flex justify-content-center align-items-center NewProject">
                         <div className="formDiv">
                             <h1 className="display-6 fw-bold mb-4 mt-2 text-center">New Project</h1>
@@ -173,7 +210,7 @@ const Project = () => {
                         </div>
                     </div>
 
-                    <div className="AllProject mt-3">
+                    <div className="AllProject mt-3 d-flex align-items-center justify-content-between">
                         <div className="p-4 mt-3 border rounder-3 bg-light ProjectList">
                             <div className="sticky-top d-flex align-items-center justify-content-between input-container">
                                 <input 
@@ -183,12 +220,65 @@ const Project = () => {
                                     placeholder="Search Project"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
+                                    onKeyDown={HandlesearchProject}
                                 />
-                                <button className="search-button">
+                                <button className="search-button" onClick={ HandlesearchProject }>
                                     <FaSearch className="icon"/>
                                 </button>
                             </div>
                             <div className="mt-3 list-group">
+                                {searchTerm ? (
+                                    searchResults.length === 0 ?
+                                    (
+                                        <strong className="text-gray-dark">No project found</strong>
+                                    ) 
+                                    :
+                                    (
+                                        searchResults.map(project => (
+                                            <div key={project._id}>
+                                                <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                    <div className="d-flex align-items-center justify-content-between">
+                                                        <div className="mb-1">
+                                                            {project.name}
+                                                        </div>                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )
+                                    )
+                                    :
+                                    (
+                                        allProjects.map(project => (
+                                            <div>
+                                                <div key={project._id}>
+                                                    <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                        <div className="d-flex align-items-center justify-content-between">
+                                                            <div className="mb-1">
+                                                                {project.name}
+                                                            </div>
+                                                            <div>
+
+                                                                <button 
+                                                                    className="btn btn-outline-info m-1"
+                                                                >
+                                                                Edit
+                                                                </button>
+                                                                <button 
+                                                                    className="btn btn-outline-danger"
+                                                                    onClick={() => handleDeleteProject(project._id)}    
+                                                                >
+                                                                Delete
+                                                                </button>                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )
+
+                                }
                             </div>
                         </div>          
                     </div>

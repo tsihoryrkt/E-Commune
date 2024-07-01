@@ -91,6 +91,7 @@ li{
     background-color: #fff;
     border: 1px solid #ced4da;
     border-radius: 0.5rem;
+    width: 500px;
 }
 
 .ProjectPage .container .AllProject .ProjectList .input-container input{
@@ -114,3 +115,4 @@ li{
     padding: 0;
     margin: 0;
 }
+
