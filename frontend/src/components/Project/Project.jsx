@@ -32,6 +32,7 @@ const Project = () => {
     const [searchResults, setSearchResults] = useState('');
     const [allProjects, setAllProjects] = useState([]);
     const [selectedProject, setSelectedProject] = useState(null);
+    const [showSearchResult, setShowSearchResult] = useState(false);
 
     
     useEffect(() => {
@@ -118,15 +119,31 @@ const Project = () => {
 
     };
 
-    const HandlesearchProject = async () => {
-        const token = localStorage.getItem('token');
-        try {
-            const results = await searchProject(token, searchTerm);
-            setSearchResults(results);
+    const HandlesearchProject = async (event) => {
+        if(event.key === 'Enter' || event.type === 'click') {
+            event.preventDefault();
+            
+            try {
+                const token = localStorage.getItem('token');
+                const results = await searchProject(token, searchTerm);
+                setSearchResults(results);
+                setShowSearchResult(false);
+            }
+            catch (error) {
+                setErrorMessage('Error searching Project: ', error);
+            };
         }
-        catch (error) {
-            setErrorMessage('Error searching users: ', error);
-        };
+        else{
+            try {
+                const token = localStorage.getItem('token');
+                const results = await searchProject(token, searchTerm);
+                setSearchResults(results);
+                setShowSearchResult(true);
+            }
+            catch (error) {
+                setErrorMessage('Error searching project: ', error);
+            };
+        }
     };
 
     const handleDeleteProject = async (projectId) => {
@@ -234,17 +251,50 @@ const Project = () => {
                                     ) 
                                     :
                                     (
-                                        searchResults.map(project => (
-                                            <div key={project._id}>
-                                                <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
-                                                    <div className="d-flex align-items-center justify-content-between">
-                                                        <div className="mb-1">
-                                                            {project.name}
-                                                        </div>                                            
+                                        showSearchResult ? (
+                                            searchResults.map(project => (
+                                                <div key={project._id}>
+                                                    <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                        <div className="d-flex align-items-center justify-content-between">
+                                                            <div className="mb-1">
+                                                                {project.name}
+                                                            </div>                                            
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ))
+                                            ))
+                                        )
+                                        :
+                                        (
+                                            searchResults.map(project => (
+                                                <div>
+                                                    <div key={project._id}>
+                                                        <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                            <div className="d-flex align-items-center justify-content-between">
+                                                                <div className="mb-1">
+                                                                    {project.name}
+                                                                </div>
+                                                                <div>
+    
+                                                                    <button 
+                                                                        className="btn btn-outline-info m-1"
+                                                                    >
+                                                                    Edit
+                                                                    </button>
+                                                                    <button 
+                                                                        className="btn btn-outline-danger"
+                                                                        onClick={() => handleDeleteProject(project._id)}    
+                                                                    >
+                                                                    Delete
+                                                                    </button>                                            
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                                                                        
+                                        )
                                     )
                                     )
                                     :

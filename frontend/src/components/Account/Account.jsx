@@ -32,6 +32,7 @@ const Account = () => {
     const [searchResults, setSearchResults] = useState('');
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [showSearchResult, setShowSearchResult] = useState(false);
 
 
     useEffect(() => {
@@ -112,16 +113,39 @@ const Account = () => {
         }, 2000);
     };
 
-    const searchUser =  async () => {
+    const searchUser =  async (event) => {
 
-        const token = localStorage.getItem('token');
-        try {
-            const results = await searchPersonnel(token,searchTerm);
-            setSearchResults(results);
+        if(event.key === 'Enter' || event.type === 'click')
+        {
+            event.preventDefault();
+            const token = localStorage.getItem('token');
+            try {
+                const results = await searchPersonnel(token,searchTerm);
+                setSearchResults(results);
+                if(searchTerm){
+                    setShowSearchResult(false);
+                }
+                else{
+                    setShowSearchResult(true);
+                }
+            }
+            catch(error) {
+                console.error('Error searching users:', error);
+            }
+
         }
-        catch(error) {
-            console.error('Error searching users:', error);
+        else{
+            const token = localStorage.getItem('token');
+            try {
+                const results = await searchPersonnel(token,searchTerm);
+                setSearchResults(results);
+                setShowSearchResult(true);
+            }
+            catch(error) {
+                console.error('Error searching users:', error);
+            }
         }
+        
     }
 
     const handleUserClick = (user) => {
@@ -138,10 +162,12 @@ const Account = () => {
             setSelectedUser(null);
             setSuccessMessage('User deleted successfully');
 
-            const updatedUsers = await searchPersonnel(token, searchTerm);
+
+            setShowSearchResult(true);
+            const updatedUsers = await searchPersonnel(token, '');
             setAllUsers(updatedUsers);
+            setSearchTerm('')
             setSearchResults('');
-            setSearchTerm('');
             setSelectedUser(null);
         } catch (error) {
             setErrorMessage(error.response?.data?.message || 'Failed to delete user');
@@ -253,32 +279,28 @@ const Account = () => {
                                     ) 
                                     :
                                     (
-                                        searchResults.map(user => (
-                                            <div key={user._id} onClick={() => handleUserClick(user)}>
-                                                <div className="list-group-item list-group-item-action user-list-item rounded-3">
-                                                    <div className="d-flex align-items-center justify-content-between">
-                                                        <div className="mb-1">
-                                                            <img 
-                                                                src={`${baseUrl}/${user.image}`} 
-                                                                alt="" 
-                                                                className="rounded-circle me-3" 
-                                                            />
-                                                            {user.name} - {user.email}
+                                        showSearchResult ? (
+                                            searchResults.map(user => (
+                                                <div key={user._id} onClick={() => handleUserClick(user)}>
+                                                    <div className="list-group-item list-group-item-action user-list-item rounded-3">
+                                                        <div className="d-flex align-items-center justify-content-between">
+                                                            <div className="mb-1">
+                                                                <img 
+                                                                    src={`${baseUrl}/${user.image}`} 
+                                                                    alt="" 
+                                                                    className="rounded-circle me-3" 
+                                                                />
+                                                                {user.name} - {user.email}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    </div>
-                                            </div>
-                                        ))
-                                    )
-                                    )
-                                    :
-                                    (
-                                        <div className="text-center text-muted allUser">
-                                        {allUsers.length === 0 ? (
-                                            <strong className="text-gray-dark">No personnel found</strong>
-                                        ) : (
+                                                        </div>
+                                                </div>
+                                            ))
+                                        )
+                                        :
+                                        (
                                             <div className="list-group">
-                                                {allUsers.map(user => (
+                                                {searchResults.map(user => (
                                                     <div key={user._id} onClick={() => handleUserClick(user)}>
                                                         <div className="list-group-item list-group-item-action user-list-item rounded-3">
                                                             <div className="d-flex align-items-center justify-content-between">
@@ -290,7 +312,7 @@ const Account = () => {
                                                                     />
                                                                     {user.name} - {user.email}
                                                                 </div>
-                                                                
+
                                                                 {userData.isAdmin && (
                                                                     <button 
                                                                         className="btn btn-danger"
@@ -303,8 +325,43 @@ const Account = () => {
                                                     </div>
                                                 ))}
                                             </div>
-                                        )}
-                                    </div>  
+                                        )
+                                    )
+                                    )
+                                    :
+                                    (
+                                        <div className="text-center text-muted allUser">
+                                        {allUsers.length === 0 ? (
+                                            <strong className="text-gray-dark">No personnel found in database</strong>
+                                        ) : (
+                                                <div className="list-group">
+                                                    {allUsers.map(user => (
+                                                        <div key={user._id} onClick={() => handleUserClick(user)}>
+                                                            <div className="list-group-item list-group-item-action user-list-item rounded-3">
+                                                                <div className="d-flex align-items-center justify-content-between">
+                                                                    <div className="mb-1">
+                                                                        <img
+                                                                            src={`${baseUrl}/${user.image}`}
+                                                                            alt=""
+                                                                            className="rounded-circle me-3"
+                                                                        />
+                                                                        {user.name} - {user.email}
+                                                                    </div>
+
+                                                                    {userData.isAdmin && (
+                                                                        <button 
+                                                                            className="btn btn-danger"
+                                                                            onClick={() => handleDeletePersonnel(user._id)}
+                                                                        >Delete
+                                                                        </button>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>  
                                     )
                                 }
 
