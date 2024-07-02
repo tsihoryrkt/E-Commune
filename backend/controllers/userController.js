@@ -3,6 +3,7 @@ const multer = require('multer');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
+const Project = require('../models/Project')
 
 // Configuration of the multer for images download
 const storage = multer.diskStorage({
@@ -171,6 +172,15 @@ const deleteUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        const project = await Project.find()
+
+        if (project){
+            await Project.updateMany(
+                { members: userId},
+                { $pull: { members: userId } }
+            );
+            console.log('members removed');
+        }
         await User.findByIdAndDelete(userId);
         res.status(200).json({ message: 'User deleted successfully'});
     }

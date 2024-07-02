@@ -424,12 +424,6 @@ const Project = () => {
                                                                     {project.name}
                                                                 </div>
                                                                 <div>
-    
-                                                                    <button 
-                                                                        className="btn btn-outline-info m-1"
-                                                                    >
-                                                                    Edit
-                                                                    </button>
                                                                     <button 
                                                                         className="btn btn-outline-danger"
                                                                         onClick={() => handleDeleteProject(project._id)}    
@@ -457,12 +451,6 @@ const Project = () => {
                                                                 {project.name}
                                                             </div>
                                                             <div>
-
-                                                                <button 
-                                                                    className="btn btn-outline-info m-1"
-                                                                >
-                                                                Edit
-                                                                </button>
                                                                 <button 
                                                                     className="btn btn-outline-danger"
                                                                     onClick={() => handleDeleteProject(project._id)}    
