@@ -104,19 +104,23 @@ const Project = () => {
         try {
 
             const response = await createProject(token, formData);
-                if (response.status === 200) {
-                    setErrorMessage('');
-                    setSuccessMessage('Project created successfully');
-                    setTimeout(() => {
-                        setName('');
-                        setDescription('');
-                        setEndDate('');
-                    }, 2000);
-                }
-                else {
-                    setSuccessMessage('');
-                    setErrorMessage('failed to create project');
-                }
+            if (response.status === 200) {
+                setErrorMessage('');
+                setSuccessMessage('Project created successfully');
+                setTimeout(() => {
+                    setName('');
+                    setDescription('');
+                    setEndDate('');
+                }, 2000);
+            }
+            else {
+                setSuccessMessage('');
+                setErrorMessage('failed to create project');
+            }
+            const allProjetcs = await searchProject(token, '');
+            setAllProjects(allProjetcs);
+            setSearchTerm('')
+            setSearchResults('');
         }
         catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
