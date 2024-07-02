@@ -196,6 +196,11 @@ const Project = () => {
             await updateProject(token, formData, projectId);
             setSuccessMessage('Update successful');
             setErrorMessage('');
+
+            const allProjetcs = await searchProject(token, '');
+            setAllProjects(allProjetcs);
+            setSearchTerm('')
+            setSearchResults('');
         }
         catch (error) {
             setErrorMessage(error.response?.data?.message || 'Failed to update project');
