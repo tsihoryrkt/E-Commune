@@ -8,11 +8,12 @@ import { FaSearch } from "react-icons/fa";
 import '../../assets/css/Project.css';
 
 // import service
-import fetchUserData from "../../services/homeService";
+import fetchUserData, { fetchMembers } from "../../services/homeService";
 import { searchPersonnel } from "../../services/accountService";
 import { createProject } from "../../services/projectService";
 import { searchProject } from "../../services/projectService";
 import { deleteProject } from "../../services/projectService";
+import { updateProject } from "../../services/projectService";
 
 const Project = () => {
 
@@ -20,6 +21,7 @@ const Project = () => {
     const [ error, setError ] = useState('');
     const navigate = useNavigate();
 
+    const [ id , setId ] = useState('');
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ members, setMembers ] = useState([]);
@@ -34,11 +36,10 @@ const Project = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState('');
     const [allProjects, setAllProjects] = useState([]);
-    const [selectedProject, setSelectedProject] = useState(null);
     const [showSearchResult, setShowSearchResult] = useState(false);
 
     // For editing project
-    const [showEdit, setShowEdit] = useState(false);
+    const [ showEdit, setShowEdit ] = useState(false);
     const [ allMembers, setAllMembers ] = useState([]);
 
     
@@ -177,19 +178,59 @@ const Project = () => {
         
     };
 
-    const handleEditProject = async (event) => {
+    const handleEditProject = async (event, projectId) => {
         event.preventDefault();
+        setSuccessMessage('');
+        setErrorMessage('');
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('members', JSON.stringify(members.map(member => member._id)));
+        formData.append('startDate', startDate);
+        formData.append('endDate', endDate);
+
+        const token = localStorage.getItem('token');
+
+        try {
+            await updateProject(token, formData, projectId);
+            setSuccessMessage('Update successful');
+            setErrorMessage('');
+        }
+        catch (error) {
+            setErrorMessage(error.response?.data?.message || 'Failed to update project');
+            setSuccessMessage('');
+        }
 
     }
 
     const handleProjectClick = (project) => {
-        setSelectedProject(project);
         setShowEdit(true);
+        setId(project._id)
         setName(project.name);
         setDescription(project.description);
-        setMembers(project.members);
         setStartDate(new Date(project.startDate).toISOString().slice(0, 10));
         setEndDate(new Date(project.endDate).toISOString().slice(0, 10));
+
+        fetchMembersDetails(project.members);
+
+    }
+
+    const fetchMembersDetails = async (membersId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const data = await fetchMembers(token, membersId);
+            setMembers(data);
+
+        }
+        catch (error) {
+            if (error.response && error.response.data && error.response.data.error) {
+                setErrorMessage(error.response.data.error);
+            } else {
+                setErrorMessage('An error occurred. Please try again.');
+            }
+            setSuccessMessage('');
+        };
     }
     
     const handleAddProject = () => {
@@ -275,7 +316,7 @@ const Project = () => {
                                 <h1 className="display-6 fw-bold mb-4 mt-2 text-center">Edit Project</h1>
                                 {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
                                 {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
-                                <form onSubmit={handleEditProject} className="p-4 p-md-5 border rounded-3 bg-light">
+                                <form onSubmit={(event) => handleEditProject(event, id)} className="p-4 p-md-5 border rounded-3 bg-light">
                                             <div className="mb-3">
                                                 <label htmlFor="name">Name</label>
                                                 <input type="text" className="form-control" value={name}  onChange={(e) => setName(e.target.value)} required/>
@@ -286,8 +327,9 @@ const Project = () => {
                                             </div>
 
                                             <div className="mb-3 row">
+                                                <h3>Project members: </h3>
                                                 <div className="Members col-md-6">
-                                                    {members.map(member => (
+                                                    { members.map(member => (
                                                         <div key={member._id}>
                                                             {member.name}
                                                             <button 

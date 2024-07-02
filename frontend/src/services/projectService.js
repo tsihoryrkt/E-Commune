@@ -49,3 +49,20 @@ export const deleteProject = async (token, projectId) => {
         throw error;
     }
 }
+
+export const updateProject = async (token, formData, projectId) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+        },
+    };
+
+    try {
+        const response = await axios.put(`http://localhost:5000/project/update/${projectId}`, formData, config);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}

@@ -179,6 +179,24 @@ const deleteUser = async (req, res) => {
     }
 }
 
+// Endpoint for fetching members
+const fetchMembers = async (req, res) => {
+    const membersId = req.query.membersId;
+    console.log('members e ', membersId);
+    try {
+        const members = await User.find({
+             _id: { $in: membersId } 
+        });
+
+        res.send(members)
+
+
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
               
   
 module.exports = {
@@ -189,5 +207,6 @@ module.exports = {
     fetchUser,
     updateUserProfile,
     searchUser,
-    deleteUser
+    deleteUser,
+    fetchMembers
 }

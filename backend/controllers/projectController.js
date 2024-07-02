@@ -79,10 +79,39 @@ const deleteProject = async (req, res) => {
     }
 }
 
+// Endpoint for updating project information
+const updateProject = async (req, res) => {
+    const{ projectId } = req.params
+    const { name, description, members, startDate, endDate } = req.body;
+    const startDateObject = startDate ? new Date(startDate) : null;
+    const endDateObject = endDate ? new Date(endDate) : null;
+    
+    try {
+        const project = await Project.findById(projectId);
+        if(!project){
+            console.log('Project not found for ID ' + projectId);
+            return res.status(404).send({ error: 'Project not found' });
+        }
+        project.name = name || project.name;
+        project.description = description || project.description;
+        project.members = members ? JSON.parse(members) : project.members;
+        project.startDate = startDateObject || project.startDate;
+        project.endDate = endDateObject || project.endDate;
+
+        const updatedProject = await project.save();
+        res.status(200).send({ message: 'Project updated successfully', project: updatedProject });
+    }
+    catch(error) {
+        res.status(500).send({ error: 'Internal server error' });
+    };
+
+}
+
 module.exports = {
     upload,
     verifyToken,
     createProject,
     searchProject,
-    deleteProject
+    deleteProject,
+    updateProject
 }

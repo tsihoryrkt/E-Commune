@@ -25,4 +25,23 @@ const fetchUserData = async (token) => {
     }
 };
 
+export const fetchMembers = async (token, membersId) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        params: {
+            membersId: membersId
+        }
+    }
+
+    try {
+        const response = await axios.get('http://localhost:5000/user/members', config)
+        return response.data
+    }
+    catch (error){
+        throw error;
+    }
+}
+
 export default fetchUserData;
