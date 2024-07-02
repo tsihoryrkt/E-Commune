@@ -9,6 +9,7 @@ import '../../assets/css/Project.css';
 
 // import service
 import fetchUserData from "../../services/homeService";
+import { searchPersonnel } from "../../services/accountService";
 import { createProject } from "../../services/projectService";
 import { searchProject } from "../../services/projectService";
 import { deleteProject } from "../../services/projectService";
@@ -19,9 +20,11 @@ const Project = () => {
     const [ error, setError ] = useState('');
     const navigate = useNavigate();
 
-    const [ name,setName ] = useState('');
-    const [ description,setDescription ] = useState('');
-    const [ endDate,setEndDate ] = useState('');
+    const [ name, setName ] = useState('');
+    const [ description, setDescription ] = useState('');
+    const [ members, setMembers ] = useState([]);
+    const [ startDate, setStartDate ] = useState('');
+    const [ endDate, setEndDate ] = useState('');
 
 
     const [errorMessage, setErrorMessage] = useState('');
@@ -33,6 +36,10 @@ const Project = () => {
     const [allProjects, setAllProjects] = useState([]);
     const [selectedProject, setSelectedProject] = useState(null);
     const [showSearchResult, setShowSearchResult] = useState(false);
+
+    // For editing project
+    const [showEdit, setShowEdit] = useState(false);
+    const [ allMembers, setAllMembers ] = useState([]);
 
     
     useEffect(() => {
@@ -52,6 +59,9 @@ const Project = () => {
 
                 const allProjetcs = await searchProject(token, '');
                 setAllProjects(allProjetcs);
+
+                const allMembers = await searchPersonnel(token, '');
+                setAllMembers(allMembers);
             }
             
             catch (error) {
@@ -165,6 +175,22 @@ const Project = () => {
             setSuccessMessage('');
         }
         
+    };
+
+    const handleProjectClick = (project) => {
+        setSelectedProject(project);
+        setShowEdit(true);
+        setName(project.name);
+        setDescription(project.description);
+        setMembers(project.members);
+        setStartDate(new Date(project.startDate).toISOString().slice(0, 10));
+        setEndDate(new Date(project.endDate).toISOString().slice(0, 10));
+    }
+    const handleAddProject = () => {
+        setShowEdit(false);
+        setName('');
+        setDescription('');
+        setEndDate('');
     }
 
     return (
@@ -195,8 +221,8 @@ const Project = () => {
 
                     </Container>
                 </Navbar>
-                <div className="container-fluid d-flex justify-content-between align-items-center">
-                    <div className="container-fluid d-flex justify-content-center align-items-center NewProject">
+                <div className="container-fluid d-flex ps-0 justify-content-center align-items-center">
+                    <div className={`container-fluid d-flex justify-content-center align-items-center ${showEdit ? 'hideItems' : ''} NewProject`}>
                         <div className="formDiv">
                             <h1 className="display-6 fw-bold mb-4 mt-2 text-center">New Project</h1>
                             {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
@@ -227,8 +253,48 @@ const Project = () => {
                         </div>
                     </div>
 
-                    <div className="AllProject mt-3 d-flex align-items-center justify-content-between">
-                        <div className="p-4 mt-3 border rounder-3 bg-light ProjectList">
+                    <div className={`container-fluid d-flex justify-content-center align-items-center ${showEdit ? '' : 'hideItems'} `}>
+                            <div className="formDiv">
+                                <h1 className="display-6 fw-bold mb-4 mt-2 text-center">Edit Project</h1>
+                                {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
+                                {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
+                                <form className="p-4 p-md-5 border rounded-3 bg-light">
+                                            <div className="mb-3">
+                                                <label htmlFor="name">Name</label>
+                                                <input type="text" className="form-control" value={name}  onChange={(e) => setName(e.target.value)} required/>
+                                            </div>
+                                            <div className="mb-3">
+                                                <label htmlFor="name">Description</label>
+                                                <input type="text" className="form-control" value={description}  onChange={(e) => setDescription(e.target.value)}/>
+                                            </div>
+                                            <div className="mb-3">
+                                                <label htmlFor="members">Members</label>
+                                                <select className="form-select" multiple value={members} onChange={(e) => setMembers(Array.from(e.target.selectedOptions, option => option.value))}>
+                                                    {allMembers.map(member => (
+                                                        <option key={member._id} value={member._id}>{member.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="mb-3">
+                                                <label htmlFor="name">startDate</label>
+                                                <input type="date" className="form-control" value={startDate}  onChange={(e) => setStartDate(e.target.value)}/>
+                                            </div>
+                                            <div className="mb-3">
+                                                <label htmlFor="endDate">End Date</label>
+                                                <input type="date" className="form-control" value={endDate}  onChange={(e) => setEndDate(e.target.value)}/>
+                                            </div>
+                                    <button type="submit" className="w-100 btn btn-lg btn-primary">Edit</button>
+                               </form>
+                        </div>
+                    </div>
+
+                    <div className="AllProject mt-3">
+                        <div className={`${showEdit ? '' : 'hideItems'}`}>
+                                    <button className="btn btn-outline-primary" onClick={() => handleAddProject()}>
+                                        Add project
+                                    </button>
+                        </div>
+                        <div className="p-4 mt-3 border rounder-3 bg-light ProjectList ">
                             <div className="sticky-top d-flex align-items-center justify-content-between input-container">
                                 <input 
                                     type="text" 
@@ -253,7 +319,7 @@ const Project = () => {
                                     (
                                         showSearchResult ? (
                                             searchResults.map(project => (
-                                                <div key={project._id}>
+                                                <div key={project._id} onClick={() => handleProjectClick(project)}>
                                                     <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
                                                         <div className="d-flex align-items-center justify-content-between">
                                                             <div className="mb-1">
@@ -268,7 +334,7 @@ const Project = () => {
                                         (
                                             searchResults.map(project => (
                                                 <div>
-                                                    <div key={project._id}>
+                                                    <div key={project._id} onClick={() => handleProjectClick(project)}>
                                                         <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
                                                             <div className="d-flex align-items-center justify-content-between">
                                                                 <div className="mb-1">
@@ -301,7 +367,7 @@ const Project = () => {
                                     (
                                         allProjects.map(project => (
                                             <div>
-                                                <div key={project._id}>
+                                                <div key={project._id} onClick={() => handleProjectClick(project)}>
                                                     <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
                                                         <div className="d-flex align-items-center justify-content-between">
                                                             <div className="mb-1">

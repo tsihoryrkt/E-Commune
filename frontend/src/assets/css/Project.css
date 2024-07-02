@@ -22,7 +22,7 @@ li{
     overflow-y: auto;
 }
 
-.ProjectPage .container .NewProject .errMess{
+.ProjectPage .container .errMess{
     background: rgba(255, 255, 255, 0.7);
     display: flex;
     justify-content: center;
@@ -41,7 +41,7 @@ li{
     animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
 }
 
-.ProjectPage .container .NewProject .succMess{
+.ProjectPage .container .succMess{
     background: rgba(255, 255, 255, 0.7);
     display: flex;
     justify-content: center;
@@ -91,7 +91,7 @@ li{
     background-color: #fff;
     border: 1px solid #ced4da;
     border-radius: 0.5rem;
-    width: 500px;
+    width: 400px;
 }
 
 .ProjectPage .container .AllProject .ProjectList .input-container input{
@@ -114,5 +114,14 @@ li{
     cursor: pointer;
     padding: 0;
     margin: 0;
+}
+
+.hideItems, .hideItems *{
+    opacity: 0;
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
+    margin: 0;
+    padding: 0;
 }
 

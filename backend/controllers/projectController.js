@@ -60,9 +60,29 @@ const searchProject = async (req, res) => {
     }
 }
 
+// Endpoint for deleting project
+const deleteProject = async (req, res) => {
+    const projectId = req.params.projectId;
+    console.log('project to del: ', projectId);
+    try {
+        const project = await Project.findById(projectId);
+
+        if(!project){
+            return res.status(404).json({ message: 'project not found' });
+        }
+        
+        await Project.findByIdAndDelete(projectId);
+        res.status(200).json({ message: 'Project deleted successfully'});
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     upload,
     verifyToken,
     createProject,
-    searchProject
+    searchProject,
+    deleteProject
 }
