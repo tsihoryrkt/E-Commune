@@ -2,7 +2,9 @@ import React,  { useEffect, useState}  from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import { MdEdit } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 // import assets
 import '../../assets/css/Account.css';
@@ -194,9 +196,9 @@ const Account = () => {
                                 {userData.isAdmin && (
                                     <Nav.Link href="/task" className="text-dark">Tasks</Nav.Link>
                                     )}
+                                <Nav.Link href="/account" className="text-dark">Account</Nav.Link>
                             </Nav>
                             <Nav>
-                                <Nav.Link href="/account" className="text-dark">Account</Nav.Link>
                                 <Nav.Link onClick={handleLogout} className="text-dark">Logout</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
@@ -211,7 +213,7 @@ const Account = () => {
                         {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
                         {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
                         <div className={`formDiv ${errorMessage || successMessage ? 'shift' : ''}`}>
-                            <form onSubmit={updateProfile} className="p-4 p-md-5 border rounded-3 bg-light">
+                            <form onSubmit={updateProfile} className="p-4 p-md-5 border rounded-3 text-center">
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-floating mb-3">
@@ -232,10 +234,10 @@ const Account = () => {
                                         </div>
                                     </div>
                                     <div className="col-md-6">
-                                        <div className="form-floating mb-3">
+                                        <div className="form-floating mb-3 text-start">
                                             <input type="file" name="image" className="form-control" accept="image/x-png,image/gif,image/jpg,image/jpeg" onChange={handleImageChange}/>
-                                            <label htmlFor="image">Image</label>
-                                            <input type="hidden" name="hidden_image" value={image}/>
+                                            <label htmlFor="image"></label>
+                                            <input type="hidden" name="hidden_image" className="hiddenImage" value={image}/>
                                             <span>
                                                 <img 
                                                     src={imageUrl} 
@@ -246,16 +248,16 @@ const Account = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" className="w-100 btn btn-lg btn-primary">Save</button>
+                                <button type="submit" className="btn btn-lg btn-primary px-5">Save<MdEdit /></button>
                             </form>
                         </div>
                     </div>
                     
                 </div>
 
-                <div className="personnel">
-                    <h1 className="display-6 fw-bold mb-3 mt-2 text-center">Personnels</h1>
-                    <div className="d-flex justify-content-center">
+                <div className="personnel mt-5">
+                    <h1 className="display-6 fw-bold mb-3 text-center">Personnels</h1>
+                    <div className="d-flex justify-content-center userPersonnel">
                         <div className="p-4 m-1 border rounded-3 bg-light userList">
                             <div className="sticky-top d-flex align-items-center justify-content-between input-container">
                                 <input 
@@ -350,7 +352,7 @@ const Account = () => {
 
                                                                     {userData.isAdmin && (
                                                                         <button 
-                                                                            className="btn btn-danger"
+                                                                            className="btn btn-outline-danger"
                                                                             onClick={() => handleDeletePersonnel(user._id)}
                                                                         >Delete
                                                                         </button>
@@ -381,7 +383,7 @@ const Account = () => {
                                         <p><strong>Mobile Number:</strong> {selectedUser.mobileNumber}</p>
                                         <img src={`${baseUrl}/${selectedUser.image}`} alt={`${selectedUser.name}'s profile`} className="img-fluid img-thumbnail rounded-circle mb-3" />
                                         {userData.isAdmin && (
-                                            <button className="btn btn-danger" onClick={() => (handleDeletePersonnel(selectedUser._id))}>Delete</button>
+                                            <button className="btn btn-danger" onClick={() => (handleDeletePersonnel(selectedUser._id))}>Delete <MdDeleteForever /></button>
                                         )}
                                     </div>
                                 )

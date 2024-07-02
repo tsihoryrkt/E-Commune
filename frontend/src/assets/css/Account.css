@@ -16,39 +16,13 @@ li{
     list-style: none;
 }
 
-.AccountPage .container .setting .formDiv form .row .col-md-6 .form-floating span img{
-    width: 100px;
+@media (max-width: 1100px) {
+    .AccountPage .container .personnel .userPersonnel {
+        flex-direction: column; /* Alignement vertical pour les petits écrans */
+    }
 }
 
-.AccountPage .container .personnel .userList{
-    flex: 1;
-    height: 300px;
-    overflow-y: auto;
-}
-
-.AccountPage .container .personnel .userInfo{
-    flex: 1;
-}
-
-.AccountPage .container .setting .errMess{
-    background: rgba(255, 255, 255, 0.7);
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    font-size: 20px;
-    border-radius: 5px;
-    gap: 5rem;
-    padding: 0 1rem;
-    height: 60px;
-    left: 0.5rem;
-    right: 0.5rem;
-    backdrop-filter: blur(1px);
-    opacity: 0;
-    transform: translateY(-20px);
-    animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
-}
-
+.AccountPage .container .setting .errMess,
 .AccountPage .container .setting .succMess{
     background: rgba(255, 255, 255, 0.7);
     display: flex;
@@ -94,6 +68,47 @@ li{
     }
 }
 
+
+.AccountPage .container .setting .formDiv form{
+    background: linear-gradient(to top,#4AA2CC,#006FB6,#005EB6, #004FAB, #4AA2CC);
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+}
+
+.AccountPage .container .setting .formDiv form input{
+    border: none; 
+    color: #F0F8FF;
+    background:rgba(255,255,255,.1);
+    height: 70px;
+    border: 2px solid #4AA2CC
+}
+.AccountPage .container .setting .formDiv form input:focus{
+    border: 2px solid white;
+}
+
+.AccountPage .container .setting .formDiv form label{
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;    
+}
+
+.form-floating > label::after {
+    background-color: transparent !important;
+}
+
+.ProjectPage .container .NewProject .formDiv form label::after{
+    background:rgba(255,255,255,.1);        
+}
+
+
+.ProjectPage .container .NewProject .formDiv form .form-floating{
+    background:rgba(255,255,255,.1);
+}
+
+
+.AccountPage .container .setting .formDiv form .row .col-md-6 .form-floating span img{
+    width: 100px;
+}
+
 .AccountPage .container .personnel .userList img{
     width: 50px;
     height: 50px;
@@ -128,9 +143,19 @@ li{
     margin: 0;
 }
 
+
+.AccountPage .container .personnel .userList{
+    flex: 1;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.AccountPage .container .personnel .userInfo{
+    flex: 1;
+}
+
 .AccountPage .container .personnel .userInfo img {
     width: 100px;
     height: 100px;
     object-fit: cover;
 }
-

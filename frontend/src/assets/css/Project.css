@@ -71,12 +71,39 @@ li{
 }
 
 
-.ProjectPage .container .NewProject{
-    
+.ProjectPage .container .NewProject .formDiv form{
+    background: linear-gradient(to top,#4AA2CC,#006FB6,#005EB6, #004FAB, #4AA2CC);
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+}
+
+.ProjectPage .container .NewProject .formDiv form input{
+    border: none; 
+    color: #F0F8FF;
+    background:rgba(255,255,255,.1);
+    height: 70px;
+    border: 2px solid #4AA2CC
+}
+
+.ProjectPage .container .NewProject .formDiv form input:focus{
+    border: 2px solid white;
+}
+
+.ProjectPage .container .NewProject .formDiv form label{
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;    
+}
+.form-floating > label::after {
+    background-color: transparent !important;
+}
+.ProjectPage .container .NewProject .formDiv form label::after{
+    background:rgba(255,255,255,.1);        
 }
 
 
-
+.ProjectPage .container .NewProject .formDiv form .form-floating{
+    background:rgba(255,255,255,.1);
+}
 .ProjectPage .container .EditProject .formDiv form{
     width: 600px;
     /*background: url('../images/york-town-hall.jpg') no-repeat center/cover;*/
@@ -100,6 +127,7 @@ li{
     color: #F0F8FF;
     font-weight: 800;
     font-size: 20px;
+    border: 2px solid #4AA2CC
 }
 .ProjectPage .container .EditProject .formDiv form .editWrap input:focus{
     border: 2px solid white;

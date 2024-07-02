@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import { HiOutlineDocumentAdd } from "react-icons/hi";
 
 // import assets
 import '../../assets/css/Project.css';
@@ -176,6 +177,7 @@ const Project = () => {
             setAllProjects(updatedProject);
             setSearchResults('');
             setSearchTerm('');
+            handleAddProject();
 
         } catch (error) {
             setErrorMessage(error.response?.data?.message || 'Failed to delete Project');
@@ -246,9 +248,6 @@ const Project = () => {
     
     const handleAddProject = () => {
         setShowEdit(false);
-        setName('');
-        setDescription('');
-        setEndDate('');
     }
 
     const addMember = (memberToAdd) => {
@@ -296,7 +295,7 @@ const Project = () => {
                             <h1 className="display-6 fw-bold mb-4 mt-2 text-center">New Project</h1>
                             {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
                             {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
-                            <form onSubmit={handleCreateProject} className="p-4 p-md-5 border rounded-3 bg-light">
+                            <form onSubmit={handleCreateProject} className="p-4 p-md-5 rounded-3 text-center">
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-floating mb-3">
@@ -317,7 +316,7 @@ const Project = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" className="w-100 btn btn-lg btn-primary">Save</button>
+                                <button type="submit" className="px-5 btn btn-lg btn-primary"><HiOutlineDocumentAdd /> Add</button>
                            </form>
                         </div>
                     </div>
@@ -384,12 +383,12 @@ const Project = () => {
                                         <label htmlFor="name" className="">Start Date</label>
                                         <input type="date" className="form-control rounded-pill" value={startDate}  onChange={(e) => setStartDate(e.target.value)}/>
                                     </div>
-                                    <div className="mb-3 text-start">
+                                    <div className="text-start">
                                         <label htmlFor="endDate">End Date</label>
                                         <input type="date" className="form-control rounded-pill" value={endDate}  onChange={(e) => setEndDate(e.target.value)}/>
                                     </div>
                                 </div>
-                                <button type="submit" className="btn btn-lg btn-primary m-3 p-3">Save<MdEdit /></button>
+                                <button type="submit" className="btn btn-lg btn-primary m-3 px-5">Save<MdEdit /></button>
                             </form>
                         </div>
                     </div>
