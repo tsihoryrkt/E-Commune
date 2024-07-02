@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 
 // import assets
 import '../../assets/css/Project.css';
@@ -20,6 +21,7 @@ const Project = () => {
     const [ userData, setUserData ] = useState(null);
     const [ error, setError ] = useState('');
     const navigate = useNavigate();
+    const baseUrl = 'http://localhost:5000/uploads';
 
     const [ id , setId ] = useState('');
     const [ name, setName ] = useState('');
@@ -321,57 +323,74 @@ const Project = () => {
                     </div>
 
                     <div className={`container-fluid d-flex justify-content-center align-items-center ${showEdit ? '' : 'hideItems'} EditProject`}>
-                            <div className="formDiv">
-                                <h1 className="display-6 fw-bold mb-4 mt-2 text-center">Edit Project</h1>
-                                {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
-                                {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
-                                <form onSubmit={(event) => handleEditProject(event, id)} className="p-4 p-md-5 border rounded-3 bg-light">
-                                            <div className="mb-3">
-                                                <label htmlFor="name">Name</label>
-                                                <input type="text" className="form-control" value={name}  onChange={(e) => setName(e.target.value)} required/>
-                                            </div>
-                                            <div className="mb-3 input-container">
-                                                <label htmlFor="name">Description</label>
-                                                <textarea type="text" className="form-control" value={description}  onChange={(e) => setDescription(e.target.value)}/>
-                                            </div>
-
-                                            <div className="mb-3 row">
-                                                <h3>Project members: </h3>
-                                                <div className="Members col-md-6">
-                                                    { members.map(member => (
-                                                        <div key={member._id}>
+                        <div className="formDiv">
+                            <h1 className="display-6 fw-bold mb-4 mt-2 text-center">Edit Project</h1>
+                            {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
+                            {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
+                            <form onSubmit={(event) => handleEditProject(event, id)} className="border rounded-3 text-center">
+                                <div className="editWrap p-4 p-md-5 ">
+                                    <div className="mx-5 mb-2">
+                                        <input type="text" className="p-3 rounded-pill form-control text-center" value={name}  onChange={(e) => setName(e.target.value)} required/>
+                                    </div>
+                                    <div className="mb-3">
+                                        <textarea type="text" className="p-3 rounded-pill form-control text-center" value={description}  onChange={(e) => setDescription(e.target.value)}/>
+                                    </div>
+                                    <div className="mb-3 row MembersProject d-flex text-center">
+                                        <h4 className="p-1 text-light">Project members: </h4>
+                                        <div className="col-md-6 p-2">
+                                            <div className="Members rounded-3">
+                                                { members.map(member => (
+                                                    <div key={member._id} className="p-2 d-flex align-items-center justify-content-between">
+                                                        <div className="text-light">
+                                                            <img 
+                                                                src={`${baseUrl}/${member.image}`} 
+                                                                alt="" 
+                                                                className="rounded-circle me-3" 
+                                                            />
                                                             {member.name}
-                                                            <button 
-                                                                className="btn btn-outline-danger btn-sm ms-2"
-                                                                onClick={() => removeMember(member._id)}>
-                                                                Remove
-                                                            </button>
                                                         </div>
-                                                    ))}
-                                                </div>
-                                                <div className="AllUsers col-md-6">
-                                                    {allMembers.filter(member => !members.find(m => m._id === member._id)).map(member => (
-                                                        <div key={member._id}>
+                                                        <button 
+                                                            className="btn btn-danger btn-sm ms-2"
+                                                            onClick={() => removeMember(member._id)}>
+                                                            Remove
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6 p-2">
+                                            <div className="AllUsers rounded-3">
+                                                {allMembers.filter(member => !members.find(m => m._id === member._id)).map(member => (
+                                                    <div key={member._id} className="p-2 d-flex align-items-center justify-content-between">
+                                                        <div className="text-light">
+                                                            <img 
+                                                                src={`${baseUrl}/${member.image}`} 
+                                                                alt="" 
+                                                                className="rounded-circle me-3" 
+                                                            />
                                                             {member.name} 
-                                                            <button  
-                                                                className="btn btn-outline-primary btn-sm ms-2"
-                                                                onClick={() => addMember(member)}>
-                                                                Add
-                                                            </button>
                                                         </div>
-                                                    ))}
-                                                </div>
+                                                        <button  
+                                                            className="btn btn-primary btn-sm ms-2"
+                                                            onClick={() => addMember(member)}>
+                                                            Add
+                                                        </button>
+                                                    </div>
+                                                ))}
                                             </div>
-                                            <div className="mb-3">
-                                                <label htmlFor="name">startDate</label>
-                                                <input type="date" className="form-control" value={startDate}  onChange={(e) => setStartDate(e.target.value)}/>
-                                            </div>
-                                            <div className="mb-3">
-                                                <label htmlFor="endDate">End Date</label>
-                                                <input type="date" className="form-control" value={endDate}  onChange={(e) => setEndDate(e.target.value)}/>
-                                            </div>
-                                    <button type="submit" className="w-100 btn btn-lg btn-primary">Edit</button>
-                               </form>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 text-start">
+                                        <label htmlFor="name" className="">Start Date</label>
+                                        <input type="date" className="form-control rounded-pill" value={startDate}  onChange={(e) => setStartDate(e.target.value)}/>
+                                    </div>
+                                    <div className="mb-3 text-start">
+                                        <label htmlFor="endDate">End Date</label>
+                                        <input type="date" className="form-control rounded-pill" value={endDate}  onChange={(e) => setEndDate(e.target.value)}/>
+                                    </div>
+                                </div>
+                                <button type="submit" className="btn btn-lg btn-primary m-3 p-3">Save<MdEdit /></button>
+                            </form>
                         </div>
                     </div>
 

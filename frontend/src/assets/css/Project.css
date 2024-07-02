@@ -16,13 +16,15 @@ li{
     list-style: none;
 }
 
-.ProjectPage .container .AllProject .ProjectList{
-    height: 600px;
-    max-width: 600px;
-    overflow-y: auto;
+
+@media (max-width: 1100px) {
+    .ProjectPage .container .container-fluid {
+        flex-direction: column; /* Alignement vertical pour les petits écrans */
+    }
 }
 
-.ProjectPage .container .errMess{
+
+.ProjectPage .container .errMess, .ProjectPage .container .succMess{
     background: rgba(255, 255, 255, 0.7);
     display: flex;
     justify-content: center;
@@ -41,24 +43,6 @@ li{
     animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
 }
 
-.ProjectPage .container .succMess{
-    background: rgba(255, 255, 255, 0.7);
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    font-size: 20px;
-    border-radius: 5px;
-    gap: 5rem;
-    padding: 0 1rem;
-    height: 60px;
-    left: 0.5rem;
-    right: 0.5rem;
-    backdrop-filter: blur(1px);
-    opacity: 0;
-    transform: translateY(-20px);
-    animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
-}
 
 @keyframes slideIn {
     from {
@@ -87,11 +71,78 @@ li{
 }
 
 
-.ProjectPage .container .AllProject .ProjectList .input-container{
-    background-color: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 0.5rem;
-    width: 400px;
+.ProjectPage .container .NewProject{
+    
+}
+
+
+
+.ProjectPage .container .EditProject .formDiv form{
+    width: 600px;
+    /*background: url('../images/york-town-hall.jpg') no-repeat center/cover;*/
+    background: linear-gradient(to top,#4AA2CC,#006FB6,#005EB6, #004FAB, #4AA2CC);
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+    @media (max-width: 768px) {
+        width: 100%; 
+        width: 400px;
+        margin: 0 auto; 
+        padding: 0 20px; 
+    }
+}
+
+.ProjectPage .container .EditProject .formDiv form .editWrap{
+    width: 100%;
+}
+
+.ProjectPage .container .EditProject .formDiv form .editWrap input{
+    border: none;
+    background:rgba(255,255,255,.1);
+    color: #F0F8FF;
+    font-weight: 800;
+    font-size: 20px;
+}
+.ProjectPage .container .EditProject .formDiv form .editWrap input:focus{
+    border: 2px solid white;
+}
+
+.ProjectPage .container .EditProject .formDiv form .editWrap label{
+    color: #fff;
+    font-size: 20px;
+}
+.ProjectPage .container .EditProject .formDiv form .editWrap textarea{
+    background:rgba(255,255,255,.1);
+    border: none;
+    color: #F0F8FF;
+    font-size: 16px;
+}
+
+.ProjectPage .container .EditProject .formDiv form .editWrap textarea:focus{
+    border: 2px solid white;
+}
+
+.ProjectPage .container .EditProject .formDiv form .editWrap .MembersProject .col-md-6{
+    height: 200px;
+}
+
+.ProjectPage .container .EditProject .formDiv form .editWrap .MembersProject .col-md-6 .Members,
+.ProjectPage .container .EditProject .formDiv form .editWrap .MembersProject .col-md-6 .AllUsers{
+    background:rgba(255,255,255,.1);
+    width: 100%;
+    height: 100%;
+    border: none;
+    overflow-y: auto;
+}
+
+.ProjectPage .container .EditProject .formDiv form .editWrap .MembersProject .col-md-6 img{
+    width: 30px;
+    height: 30px;
+}
+
+
+.ProjectPage .container .AllProject .ProjectList{
+    height: 600px;
+    max-width: 600px;
+    overflow-y: auto;
 }
 
 .ProjectPage .container .AllProject .ProjectList .input-container input{
@@ -125,11 +176,15 @@ li{
     padding: 0;
 }
 
-.ProjectPage .container .EditProject .formDiv form{
-    width: 600px;
-}
 
-.ProjectPage .container .EditProject .formDiv form .input-container .input-description{
-    height: 70px;
-    text-align: center;
+.ProjectPage .container .AllProject .ProjectList .input-container{
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    @media (min-width: 768px) {
+        width: 100%; 
+        width: 400px;
+        margin: 0 auto; 
+        padding: 0 20px; 
+    }
 }
