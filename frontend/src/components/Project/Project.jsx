@@ -88,9 +88,9 @@ const Project = () => {
     };
 
     const handleCreateProject = async (e) => {
+        e.preventDefault();
         setErrorMessage('');
         setSuccessMessage('');
-        e.preventDefault();
 
         const formData = new FormData();
         formData.append('name', name);
@@ -177,6 +177,11 @@ const Project = () => {
         
     };
 
+    const handleEditProject = async (event) => {
+        event.preventDefault();
+
+    }
+
     const handleProjectClick = (project) => {
         setSelectedProject(project);
         setShowEdit(true);
@@ -186,11 +191,23 @@ const Project = () => {
         setStartDate(new Date(project.startDate).toISOString().slice(0, 10));
         setEndDate(new Date(project.endDate).toISOString().slice(0, 10));
     }
+    
     const handleAddProject = () => {
         setShowEdit(false);
         setName('');
         setDescription('');
         setEndDate('');
+    }
+
+    const addMember = (memberToAdd) => {
+        if (!members.find(member => member._id === memberToAdd._id)) {
+            setMembers([...members, memberToAdd]);
+        }
+    };
+
+    const removeMember = (memberIdToRemove) => {
+        const updatedMembers = members.filter(member => member._id !== memberIdToRemove);
+        setMembers(updatedMembers);
     }
 
     return (
@@ -253,27 +270,46 @@ const Project = () => {
                         </div>
                     </div>
 
-                    <div className={`container-fluid d-flex justify-content-center align-items-center ${showEdit ? '' : 'hideItems'} `}>
+                    <div className={`container-fluid d-flex justify-content-center align-items-center ${showEdit ? '' : 'hideItems'} EditProject`}>
                             <div className="formDiv">
                                 <h1 className="display-6 fw-bold mb-4 mt-2 text-center">Edit Project</h1>
                                 {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
                                 {successMessage && <p className="mt-3 text-success succMess">{successMessage}</p>}
-                                <form className="p-4 p-md-5 border rounded-3 bg-light">
+                                <form onSubmit={handleEditProject} className="p-4 p-md-5 border rounded-3 bg-light">
                                             <div className="mb-3">
                                                 <label htmlFor="name">Name</label>
                                                 <input type="text" className="form-control" value={name}  onChange={(e) => setName(e.target.value)} required/>
                                             </div>
-                                            <div className="mb-3">
+                                            <div className="mb-3 input-container">
                                                 <label htmlFor="name">Description</label>
-                                                <input type="text" className="form-control" value={description}  onChange={(e) => setDescription(e.target.value)}/>
+                                                <textarea type="text" className="form-control" value={description}  onChange={(e) => setDescription(e.target.value)}/>
                                             </div>
-                                            <div className="mb-3">
-                                                <label htmlFor="members">Members</label>
-                                                <select className="form-select" multiple value={members} onChange={(e) => setMembers(Array.from(e.target.selectedOptions, option => option.value))}>
-                                                    {allMembers.map(member => (
-                                                        <option key={member._id} value={member._id}>{member.name}</option>
+
+                                            <div className="mb-3 row">
+                                                <div className="Members col-md-6">
+                                                    {members.map(member => (
+                                                        <div key={member._id}>
+                                                            {member.name}
+                                                            <button 
+                                                                className="btn btn-outline-danger btn-sm ms-2"
+                                                                onClick={() => removeMember(member._id)}>
+                                                                Remove
+                                                            </button>
+                                                        </div>
                                                     ))}
-                                                </select>
+                                                </div>
+                                                <div className="AllUsers col-md-6">
+                                                    {allMembers.filter(member => !members.find(m => m._id === member._id)).map(member => (
+                                                        <div key={member._id}>
+                                                            {member.name} 
+                                                            <button  
+                                                                className="btn btn-outline-primary btn-sm ms-2"
+                                                                onClick={() => addMember(member)}>
+                                                                Add
+                                                            </button>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
                                             <div className="mb-3">
                                                 <label htmlFor="name">startDate</label>

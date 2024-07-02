@@ -125,3 +125,11 @@ li{
     padding: 0;
 }
 
+.ProjectPage .container .EditProject .formDiv form{
+    width: 600px;
+}
+
+.ProjectPage .container .EditProject .formDiv form .input-container .input-description{
+    height: 70px;
+    text-align: center;
+}
