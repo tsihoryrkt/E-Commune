@@ -184,12 +184,12 @@ const Home = () => {
                             <h1 className="pb-2 mb-0">My projects</h1>
                             {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
 
-                            <div className="p-4 mt-3 mx-3 border rounder-3 bg-light ProjectList">
-                                <div className="sticky-top d-flex align-items-center justify-content-between input-container">
+                            <div className="p-4 mt-3 mx-3 border rounded-3 bg-light ProjectList">
+                                <div className="rounded-3 sticky-top d-flex align-items-center justify-content-between input-container">
                                     <input 
                                             type="text" 
                                             name="search_user" 
-                                            className="search-input"
+                                            className="search-input rounded-3"
                                             placeholder="Search Project"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -266,14 +266,14 @@ const Home = () => {
 
                     <div className="mb-4 col-md-6 text-center d-flex justify-content-center align-items-center mainBoard">
 
-                        <div className={ `WelcomeUser p-4 rounded-3 text-center d-flex justify-content-text-center d-flex justify-content-center align-items-centercenter align-items-center ${showProject ? 'hideItems' : '' }`}>
-                            <div className="rounded-4 p-3 mb-3">
+                        <div className={ `WelcomeUser rounded-3 text-center d-flex justify-content-text-center d-flex justify-content-center align-items-centercenter align-items-center ${showProject ? 'hideItems' : '' }`}>
+                            <div className="rounded-4 p-3 m-5">
                                 <img 
                                     src={conseil} 
                                     alt="Municipal conseil"
                                     className="rounded-3"     
                                 />
-                                <p className="p-4">WELCOME TO PROJECT MANAGEMENT <strong>E-COMMUNE</strong></p>
+                                <p className="p-4">Welcome to <strong>E-Commune</strong> Project Management</p>
                             </div>
                         </div>
                         <div className={`ProjectInfo p-4 p-md-5 m-3 rounded-3 text-center ${showProject ? '' : 'hideItems'}`}>

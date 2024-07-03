@@ -5,6 +5,7 @@ import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
 import Account from "./components/Account/Account";
 import Project from "./components/Project/Project";
+import Task from "./components/Task/Task";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/home" Component={Home}/>
         <Route path="/account" Component={Account}/>
         <Route path="/project" Component={Project}/>
+        <Route path="/task" Component={Task}/>
       </Routes>
     </Router>
   );

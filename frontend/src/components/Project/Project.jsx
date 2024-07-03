@@ -248,6 +248,12 @@ const Project = () => {
     
     const handleAddProject = () => {
         setShowEdit(false);
+        setId('');
+        setName('');
+        setDescription('');
+        setMembers([]);
+        setStartDate('');
+        setEndDate('');
     }
 
     const addMember = (memberToAdd) => {
