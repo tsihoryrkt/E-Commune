@@ -44,4 +44,22 @@ export const fetchMembers = async (token, membersId) => {
     }
 }
 
+export const searchProject = async  (token, searchTerm) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        params: {
+            searchTerm: searchTerm
+        }
+    }
+    try {
+        const response = await axios.get('http://localhost:5000/project/searchUserProject', config)
+        return response.data;
+    }
+    catch (error){
+        throw error;
+    }
+}
+
 export default fetchUserData;

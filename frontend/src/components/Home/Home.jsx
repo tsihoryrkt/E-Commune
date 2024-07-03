@@ -9,14 +9,32 @@ import { FaSearch } from "react-icons/fa";
 import '../../assets/css/Home.css';
 
 // import service
-import '../../services/homeService';
 import fetchUserData from "../../services/homeService";
+import { searchProject } from "../../services/homeService";
+import { fetchMembers } from "../../services/homeService";
 
 const Home = () => {
     const [ userData, setUserData ] = useState(null);
     const [ error, setError ] = useState('');
     const navigate = useNavigate();
     const baseUrl = 'http://localhost:5000/uploads';
+
+    const [ id , setId ] = useState('');
+    const [ name, setName ] = useState('');
+    const [ description, setDescription ] = useState('');
+    const [ members, setMembers ] = useState([]);
+    const [ startDate, setStartDate ] = useState('');
+    const [ endDate, setEndDate ] = useState('');
+
+    const [errorMessage, setErrorMessage] = useState('');
+
+
+    // For searching project
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState('');
+    const [MyProjects, setMyProjects] = useState([]);
+    const [showSearchResult, setShowSearchResult] = useState(false);
+
 
     useEffect(() => {
         const getUserData = async () => {
@@ -31,8 +49,10 @@ const Home = () => {
                 const data = await fetchUserData(token);
 
                 setUserData(data);
-            }
             
+                const allProjetcs = await searchProject(token, '');
+                setMyProjects(allProjetcs);
+            }
             catch (error) {
  
                 setError(error.message);
@@ -56,6 +76,60 @@ const Home = () => {
             navigate('/login');
         }, 2000);
     };
+
+    const HandlesearchProject = async (event) => {
+        if(event.key === 'Enter' || event.type === 'click') {
+            event.preventDefault();
+            
+            try {
+                const token = localStorage.getItem('token');
+                const results = await searchProject(token, searchTerm);
+                setSearchResults(results);
+                setShowSearchResult(false);
+            }
+            catch (error) {
+                setErrorMessage('Error searching Project: ', error);
+            };
+        }
+        else{
+            try {
+                const token = localStorage.getItem('token');
+                const results = await searchProject(token, searchTerm);
+                setSearchResults(results);
+                setShowSearchResult(true);
+            }
+            catch (error) {
+                setErrorMessage('Error searching project: ', error);
+            };
+        }
+    };
+    const handleProjectClick = (project) => {
+        setId(project._id)
+        setName(project.name);
+        setDescription(project.description);
+        setStartDate(new Date(project.startDate).toISOString().slice(0, 10));
+        setEndDate(new Date(project.endDate).toISOString().slice(0, 10));
+
+        fetchMembersDetails(project.members);
+
+    }
+    const fetchMembersDetails = async (membersId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const data = await fetchMembers(token, membersId);
+            setMembers(data);
+
+        }
+        catch (error) {
+            if (error.response && error.response.data && error.response.data.error) {
+                setErrorMessage(error.response.data.error);
+            } else {
+                setErrorMessage('An error occurred. Please try again.');
+            }
+        };
+    }
+
+
 
     return (
         <div className="HomePage">
@@ -104,7 +178,8 @@ const Home = () => {
                         </div>
                         <div className="mt-4 mb-4 text-center MyProject ">
                             <h1 className="pb-2 mb-0">My projects</h1>
-                        
+                            {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
+
                             <div className="p-4 mt-3 mx-3 border rounder-3 bg-light ProjectList ">
                                 <div className="sticky-top d-flex align-items-center justify-content-between input-container">
                                     <input 
@@ -112,11 +187,74 @@ const Home = () => {
                                             name="search_user" 
                                             className="search-input"
                                             placeholder="Search Project"
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                            onKeyDown={HandlesearchProject}
                                     />
                                     <button className="search-button">
                                         <FaSearch className="icon"/>
                                     </button>
                                 </div>
+                                <div className="mt-3 list-group">
+                                {searchTerm ? (
+                                    searchResults.length === 0 ?
+                                    (
+                                        <strong className="text-gray-dark">No project found</strong>
+                                    ) 
+                                    :
+                                    (
+                                        showSearchResult ? (
+                                            searchResults.map(project => (
+                                                <div key={project._id} onClick={() => handleProjectClick(project)}>
+                                                    <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                        <div className="d-flex align-items-center justify-content-between">
+                                                            <div className="mb-1">
+                                                                {project.name}
+                                                            </div>                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )
+                                        :
+                                        (
+                                            searchResults.map(project => (
+                                                <div>
+                                                    <div key={project._id} onClick={() => handleProjectClick(project)}>
+                                                        <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                            <div className="d-flex align-items-center justify-content-between">
+                                                                <div className="mb-1">
+                                                                    {project.name}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                                                                        
+                                        )
+                                    )
+                                    )
+                                    :
+                                    (
+                                        MyProjects.map(project => (
+                                            <div>
+                                                <div key={project._id} onClick={() => handleProjectClick(project)}>
+                                                    <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                        <div className="d-flex align-items-center justify-content-between">
+                                                            <div className="mb-1">
+                                                                {project.name}
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )
+
+                                }
+                            </div>    
                             
                             </div>
                         </div>

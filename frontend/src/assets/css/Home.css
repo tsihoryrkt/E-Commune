@@ -15,6 +15,54 @@ a{
 li{
     list-style: none;
 }
+
+.ProjectPage .container .errMess, .ProjectPage .container .succMess{
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-size: 20px;
+    border-radius: 5px;
+    gap: 5rem;
+    padding: 0 1rem;
+    height: 60px;
+    left: 0.5rem;
+    right: 0.5rem;
+    backdrop-filter: blur(1px);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
+}
+
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        transform: translateY(-20px);
+    }
+}
+
+
 /*
 .HomePage{
     background: linear-gradient(to top,#ffffff, #4AA2CC,#006FB6,#005EB6, #004FAB);    
@@ -31,8 +79,16 @@ li{
 }
 
 .HomePage .MyProject .ProjectList{
-    height: 500px;    
+    height: 500px;
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);    
 }
+
+.HomePage .MyProject .input-container{
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;    
+}
+
 
 .HomePage .MyProject .input-container input{
     border: none;
@@ -42,7 +98,7 @@ li{
     position: relative;
 }
 
-.HomePage .ProjectList .input-container input:focus{
+.HomePage .MyProject .input-container input:focus{
     color: #495057;
     background-color: #fff;    
 }

@@ -107,11 +107,33 @@ const updateProject = async (req, res) => {
 
 }
 
+// Endpoint for searching user project
+const searchUserProject = async (req, res) => {
+    const userId = req.userId
+    const searchTerm = req.query.searchTerm;
+    try{
+        const project = await Project.find({
+            members: userId,
+            $or: [
+                { name: { $regex: searchTerm, $options: 'i' } },
+                { description: { $regex: searchTerm, $options: 'i' } }
+            ]
+        });
+        res.send(project);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+
 module.exports = {
     upload,
     verifyToken,
     createProject,
     searchProject,
     deleteProject,
-    updateProject
+    updateProject,
+    searchUserProject
 }
