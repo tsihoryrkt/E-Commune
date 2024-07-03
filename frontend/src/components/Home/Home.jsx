@@ -74,9 +74,9 @@ const Home = () => {
                                 {userData.isAdmin && (
                                     <Nav.Link href="/task" className="text-dark">Tasks</Nav.Link>
                                 )}
+                                <Nav.Link href="/account" className="text-dark">Account</Nav.Link>
                             </Nav>
                             <Nav>
-                                <Nav.Link href="/account" className="text-dark">Account</Nav.Link>
                                 <Nav.Link onClick={handleLogout} className="text-dark">Logout</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
@@ -85,7 +85,7 @@ const Home = () => {
                 </Navbar>
 
                 <div className="row">
-                    <div className="col-sm-4 col-md-3 vh-100">
+                    <div className="col-sm-4 col-md-3">
                         <div className="mt-4 mb-4 text-center userProfile">
                             {userData.image && (
                                 <span>
@@ -101,25 +101,24 @@ const Home = () => {
                                 <div className="mt-3 mb-3" id="login_user_name">{ userData.name }</div>
                             </div>
                         </div>
-                        <hr className="bg-secondary border-2 border-top border-secondary" />
-                        <div className="mt-4 mb-4 overflow-auto">
-                            <h6 className="border-bottom pb-2 mb-0">Mes projets</h6>
+                        <div className="mt-4 mb-4 overflow-auto MyProject">
+                            <h6 className="pb-2 mb-0">Mes projets</h6>
                             {error && <p style={{ color: 'red' }}>{error}</p>}
                         </div>
                     </div>
 
-                    <div className="mb-4 col-md-6 vh-100 mainBoard">
+                    <div className="mb-4 col-md-6 mainBoard">
                         
         
                     </div>
 
-                    <div className="col-sm-4 col-md-3 vh-100 border-start">
-                        <div className="pt-4 pb-4 h-50 overflow-auto">
+                    <div className="col-sm-4 col-md-3">
+                        <div className="pt-4 pb-4 overflow-auto">
                             <h6 className="mb-3">Contributor</h6>
 
                         </div>
 
-                        <div className="pt-4 pb-4 h-50 overflow-auto">
+                        <div className="pt-4 pb-4 overflow-auto">
                             <h6 className="mb-3">Statistics</h6>
                         </div>
                     </div>

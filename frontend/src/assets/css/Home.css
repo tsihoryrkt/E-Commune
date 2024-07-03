@@ -15,30 +15,19 @@ a{
 li{
     list-style: none;
 }
-
+/*
 .HomePage{
     background: linear-gradient(to top,#ffffff, #4AA2CC,#006FB6,#005EB6, #004FAB);    
-}
+}*/
 .HomePage .userProfile img{
     width: 150px;
     height: 150px;
 }
 
 .HomePage .userProfile #login_user_name{
-    color:#f8f9fa;
     font-size: 20px;
     font-weight: 400;
 }
 
 .HomePage .mainBoard{
-}
-
-.HomePage .mainBoard h3{
-    color: white;
-    height: 80px;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    padding: 0 1rem;
 }
