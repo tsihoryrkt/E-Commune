@@ -19,6 +19,7 @@ li{
 .HomePage{
     background: linear-gradient(to top,#ffffff, #4AA2CC,#006FB6,#005EB6, #004FAB);    
 }*/
+
 .HomePage .userProfile img{
     width: 150px;
     height: 150px;
@@ -28,6 +29,34 @@ li{
     font-size: 20px;
     font-weight: 400;
 }
+
+.HomePage .MyProject .ProjectList{
+    height: 500px;    
+}
+
+.HomePage .MyProject .input-container input{
+    border: none;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    position: relative;
+}
+
+.HomePage .ProjectList .input-container input:focus{
+    color: #495057;
+    background-color: #fff;    
+}
+
+.HomePage .MyProject .input-container .search-button{
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
 
 .HomePage .mainBoard{
 }

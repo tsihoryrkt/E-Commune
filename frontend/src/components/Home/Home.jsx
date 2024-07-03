@@ -2,6 +2,7 @@ import React, { useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import { FaSearch } from "react-icons/fa";
 
 
 // import assets
@@ -84,8 +85,8 @@ const Home = () => {
                     </Container>
                 </Navbar>
 
-                <div className="row">
-                    <div className="col-sm-4 col-md-3">
+                <div className="row text-center">
+                    <div className="col-md-3 text-center">
                         <div className="mt-4 mb-4 text-center userProfile">
                             {userData.image && (
                                 <span>
@@ -101,9 +102,23 @@ const Home = () => {
                                 <div className="mt-3 mb-3" id="login_user_name">{ userData.name }</div>
                             </div>
                         </div>
-                        <div className="mt-4 mb-4 overflow-auto MyProject">
-                            <h6 className="pb-2 mb-0">Mes projets</h6>
-                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                        <div className="mt-4 mb-4 text-center MyProject ">
+                            <h1 className="pb-2 mb-0">My projects</h1>
+                        
+                            <div className="p-4 mt-3 mx-3 border rounder-3 bg-light ProjectList ">
+                                <div className="sticky-top d-flex align-items-center justify-content-between input-container">
+                                    <input 
+                                            type="text" 
+                                            name="search_user" 
+                                            className="search-input"
+                                            placeholder="Search Project"
+                                    />
+                                    <button className="search-button">
+                                        <FaSearch className="icon"/>
+                                    </button>
+                                </div>
+                            
+                            </div>
                         </div>
                     </div>
 
@@ -112,9 +127,9 @@ const Home = () => {
         
                     </div>
 
-                    <div className="col-sm-4 col-md-3">
+                    <div className="col-md-3">
                         <div className="pt-4 pb-4 overflow-auto">
-                            <h6 className="mb-3">Contributor</h6>
+                            <h6 className="mb-3">My Task</h6>
 
                         </div>
 
