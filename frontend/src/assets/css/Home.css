@@ -62,12 +62,6 @@ li{
     }
 }
 
-
-/*
-.HomePage{
-    background: linear-gradient(to top,#ffffff, #4AA2CC,#006FB6,#005EB6, #004FAB);    
-}*/
-
 .HomePage .userProfile img{
     width: 150px;
     height: 150px;
@@ -113,6 +107,67 @@ li{
     margin: 0;
 }
 
+.HomePage .mainBoard .WelcomeUser{
+    background: linear-gradient(to top,#4AA2CC,#006FB6,#005EB6, #004FAB, #4AA2CC);
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+}
 
-.HomePage .mainBoard{
+.HomePage .mainBoard .WelcomeUser .rounded-4{
+    background:rgba(255,255,255,.1);
+    color: #F0F8FF;
+}
+
+.HomePage .mainBoard .WelcomeUser .rounded-4 img{
+    border: 2px solid #4AA2CC
+}
+
+.HomePage .mainBoard .WelcomeUser .rounded-4 p{
+    font-size: 40px;
+}
+
+.HomePage .mainBoard .hideItems{
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+    height: 0;
+    width: 0;
+    margin: 0;
+    padding: 0;    
+}
+
+.HomePage .mainBoard .ProjectInfo{
+    min-height: 800px;
+    background: linear-gradient(to top,#4AA2CC,#006FB6,#005EB6, #004FAB, #4AA2CC);
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+}
+
+.HomePage .mainBoard .ProjectInfo .Name,
+.HomePage .mainBoard .ProjectInfo .Description,
+.HomePage .mainBoard .ProjectInfo .Members,
+.HomePage .mainBoard .ProjectInfo .startDate,
+.HomePage .mainBoard .ProjectInfo .endDate{
+        border: none; 
+    color: #F0F8FF;
+    background:rgba(255,255,255,.1);
+}
+
+.HomePage .mainBoard .ProjectInfo .Name{
+    font-size: 26px;
+    font-weight: 700;
+    max-width: 500px;
+    border: 2px solid #4AA2CC
+}
+
+.HomePage .mainBoard .ProjectInfo .Description{
+    font-size: 20px;
+}
+
+.HomePage .mainBoard .ProjectInfo .Members{
+    height: 180px;
+    border: 2px solid #4AA2CC
+}
+
+.HomePage .mainBoard .ProjectInfo .Members img{
+    width: 50px;
+    height: 50px;
 }

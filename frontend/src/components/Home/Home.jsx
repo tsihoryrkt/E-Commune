@@ -3,10 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
-
+import { FaHourglassStart } from "react-icons/fa";
+import { FaHourglassEnd } from "react-icons/fa";
 
 // import assets
 import '../../assets/css/Home.css';
+import conseil from '../../assets/images/conseil-municipal.jpeg'
 
 // import service
 import fetchUserData from "../../services/homeService";
@@ -26,7 +28,8 @@ const Home = () => {
     const [ startDate, setStartDate ] = useState('');
     const [ endDate, setEndDate ] = useState('');
 
-    const [errorMessage, setErrorMessage] = useState('');
+    const [ errorMessage, setErrorMessage ] = useState('');
+    const [ showProject, setShowProject ] = useState(false);
 
 
     // For searching project
@@ -111,6 +114,7 @@ const Home = () => {
         setEndDate(new Date(project.endDate).toISOString().slice(0, 10));
 
         fetchMembersDetails(project.members);
+        setShowProject(true);
 
     }
     const fetchMembersDetails = async (membersId) => {
@@ -180,7 +184,7 @@ const Home = () => {
                             <h1 className="pb-2 mb-0">My projects</h1>
                             {errorMessage && <p className="mt-3 text-danger errMess">{errorMessage}</p>}
 
-                            <div className="p-4 mt-3 mx-3 border rounder-3 bg-light ProjectList ">
+                            <div className="p-4 mt-3 mx-3 border rounder-3 bg-light ProjectList">
                                 <div className="sticky-top d-flex align-items-center justify-content-between input-container">
                                     <input 
                                             type="text" 
@@ -260,8 +264,54 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <div className="mb-4 col-md-6 mainBoard">
-                        
+                    <div className="mb-4 col-md-6 text-center d-flex justify-content-center align-items-center mainBoard">
+
+                        <div className={ `WelcomeUser p-4 rounded-3 text-center d-flex justify-content-text-center d-flex justify-content-center align-items-centercenter align-items-center ${showProject ? 'hideItems' : '' }`}>
+                            <div className="rounded-4 p-3 mb-3">
+                                <img 
+                                    src={conseil} 
+                                    alt="Municipal conseil"
+                                    className="rounded-3"     
+                                />
+                                <p className="p-4">WELCOME TO PROJECT MANAGEMENT <strong>E-COMMUNE</strong></p>
+                            </div>
+                        </div>
+                        <div className={`ProjectInfo p-4 p-md-5 m-3 rounded-3 text-center ${showProject ? '' : 'hideItems'}`}>
+                            <div className="Name mb-3 mx-auto rounded-4 p-2 text-center">
+                                {name}
+                            </div>
+                            <div className="Description rounded-4 p-3 mb-3">
+                                {description}
+                            </div>
+                            <h2 className="text-light">Members:</h2>
+                            <div className="Members rounded-3 d-flex flex-wrap justify-content-center overflow-y-auto mb-3">
+                                { members.map(member => (
+                                    <div key={member._id} className="p-2 d-flex align-items-center justify-content-between">
+                                        <div className="text-light d-grid">
+                                            <img 
+                                                src={`${baseUrl}/${member.image}`} 
+                                                alt="" 
+                                                className="rounded-circle mx-auto" 
+                                            />
+                                            <span className="text-center">{member.name}</span>
+                                        </div>
+                                    </div>
+                                ))}   
+                            </div>
+                            <div className="DateProject d-flex flex-wrap justify-content-around">
+
+                                <div className="startDate p-2 rounded-3">
+                                    <p className="fw-semibold">Start Date</p>
+
+                                    <p><FaHourglassStart /> {startDate}</p>
+                                </div>
+                                <div className="endDate p-2 rounded-3">
+                                    <p className="fw-semibold">End Date</p>
+
+                                    <p><FaHourglassEnd /> {endDate}</p>
+                                </div>
+                            </div>
+                        </div>
         
                     </div>
 
