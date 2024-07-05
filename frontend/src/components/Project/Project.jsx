@@ -223,7 +223,7 @@ const Project = () => {
         setName(project.name);
         setDescription(project.description);
         setStartDate(new Date(project.startDate).toISOString().slice(0, 10));
-        setEndDate(new Date(project.endDate).toISOString().slice(0, 10));
+        setEndDate(project.endDate ? new Date(project.endDate).toISOString().slice(0, 10) : '');
 
         fetchMembersDetails(project.members);
 
