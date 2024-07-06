@@ -165,3 +165,46 @@ li{
     background:rgba(255,255,255,.1);
 
 }
+
+.TaskPage .container .AllTask .TaskList{
+    height: 600px;
+    max-width: 600px;
+    overflow-y: auto;
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);    
+}
+
+.TaskPage .container .AllTask .TaskList .input-container{
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    @media (min-width: 768px) {
+        width: 100%; 
+        width: 400px;
+        margin: 0 auto; 
+        padding: 0 20px; 
+    }
+}
+
+.TaskPage .container .AllTask .TaskList .input-container input{
+    border: none;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    position: relative;
+}
+
+.TaskPage .container .AllTask .TaskList .input-container input:focus{
+    color: #495057;
+    background-color: #fff;
+}
+
+
+.TaskPage .container .AllTask .TaskList .input-container .search-button{
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}

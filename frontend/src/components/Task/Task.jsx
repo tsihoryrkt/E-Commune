@@ -15,6 +15,7 @@ import '../../assets/css/Task.css';
 import fetchUserData, { fetchMembers } from "../../services/homeService";
 import { searchProject } from "../../services/projectService";
 import { createTask } from "../../services/taskService";
+import { searchTask } from "../../services/taskService";
 
 const Task = () => {
 
@@ -49,6 +50,12 @@ const Task = () => {
     const [ProjectEndDate, setProjectEndDate] = useState('');
     const [ProjectMembers, setProjectMembers] = useState([]);
 
+    //  For searching task
+    const [searchTerm, setSearchTerm] = useState('');    
+    const [searchResults, setSearchResults] = useState('');
+    const [allTask, setAllTask] = useState([]);
+    const [showSearchResult, setShowSearchResult] = useState(false)
+
     useEffect(() => {
         const getUserData = async () => {
             const token = localStorage.getItem('token');
@@ -66,6 +73,9 @@ const Task = () => {
 
                 const allProjetcs = await searchProject(token, '');
                 setAllProjects(allProjetcs);
+
+                const allTasks = await searchTask(token, '');
+                setAllTask(allTasks);
 
             }
             
@@ -222,6 +232,33 @@ const Task = () => {
         setDueDate('');
     }
 
+    const HandleSearchTask = async (event) => {
+        if(event.key === 'Enter' || event.type === 'click') {
+            event.preventDefault();
+            
+            try {
+                const token = localStorage.getItem('token');
+                const results = await searchTask(token, searchTerm);
+                setSearchResults(results);
+                setShowSearchResult(false);
+            }
+            catch (error) {
+                setErrorMessage('Error searching Task: ', error);
+            };
+        }
+        else{
+            try {
+                const token = localStorage.getItem('token');
+                const results = await searchTask(token, searchTerm);
+                setSearchResults(results);
+                setShowSearchResult(true);
+            }
+            catch (error) {
+                setErrorMessage('Error searching Task: ', error);
+            };
+        }
+    };
+
     return (
         <div className="TaskPage">
             <div className="container">
@@ -250,7 +287,7 @@ const Task = () => {
 
                     </Container>
                 </Navbar>
-                <div className="container-fluid d-flex flex-wrap ps-0 justify-content-center align-items-center">
+                <div className="container-fluid d-flex ps-0 justify-content-center align-items-center">
 
                     <div className="container-fluid d-flex justify-content-center align-items-center NewProject">
                         <div className="formDiv">
@@ -390,7 +427,98 @@ const Task = () => {
                         </div>
                     </div>
 
+                    <div className="AllTask mt-3">
+                        <div className="p-4 mt-3 border rounder-3 bg-light TaskList">
+                            <div className="sticky-top d-flex align-items-center justify-content-between input-container">
+                                <input 
+                                    type="text" 
+                                    name="search_task" 
+                                    className="search-input"
+                                    placeholder="Search Task"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onKeyDown={HandleSearchTask}
+                                />
+                                <button className="search-button" onClick={HandleSearchTask}>
+                                    <FaSearch className="icon"/>
+                                </button>
+                            </div>
+                            <div className="mt-3 list-group">
+                                {searchTerm ? (
+                                    searchResults.length === 0 ?
+                                    (
+                                        <strong className="text-gray-dark">No task found</strong>
+                                    ) 
+                                    :
+                                    (
+                                        showSearchResult ? (
+                                            searchResults.map(task => (
+                                                <div key={task._id}>
+                                                    <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                        <div className="d-flex align-items-center justify-content-between">
+                                                            <div className="mb-1">
+                                                                {task.title}
+                                                            </div>                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )
+                                        :
+                                        (
+                                            searchResults.map(task => (
+                                                <div>
+                                                    <div key={task._id}>
+                                                        <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                            <div className="d-flex align-items-center justify-content-between">
+                                                                <div className="mb-1">
+                                                                    {task.title}
+                                                                </div>
+                                                                <div>
+                                                                    <button 
+                                                                        className="btn btn-outline-danger"
+                                                                            
+                                                                    >
+                                                                    Delete
+                                                                    </button>                                            
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                                                                        
+                                        )
+                                    )
+                                    )
+                                    :
+                                    (
+                                        allTask.map(task => (
+                                            <div>
+                                                <div key={task._id}>
+                                                    <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                        <div className="d-flex align-items-center justify-content-between">
+                                                            <div className="mb-1">
+                                                                {task.title}
+                                                            </div>
+                                                            <div>
+                                                                <button 
+                                                                    className="btn btn-outline-danger"    
+                                                                >
+                                                                Delete
+                                                                </button>                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )
 
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

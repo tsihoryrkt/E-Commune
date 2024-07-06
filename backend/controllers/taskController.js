@@ -44,8 +44,27 @@ const createTask = async (req,res) => {
     }
 }
 
+// Endpoint for searching task
+const searchTask = async (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    console.log('task mitady')
+    try{
+        const task = await Task.find({
+            $or: [
+                { title: { $regex: searchTerm, $options: 'i' } },
+                { description: { $regex: searchTerm, $options: 'i' } }
+            ]
+        });
+        res.send(task);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     upload,
     verifyToken,
-    createTask
+    createTask,
+    searchTask
 }
