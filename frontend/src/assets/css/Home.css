@@ -144,9 +144,10 @@ li{
 .HomePage .mainBoard .ProjectInfo .Name,
 .HomePage .mainBoard .ProjectInfo .Description,
 .HomePage .mainBoard .ProjectInfo .Members,
+.HomePage .mainBoard .ProjectInfo .Tasks,
 .HomePage .mainBoard .ProjectInfo .startDate,
 .HomePage .mainBoard .ProjectInfo .endDate{
-        border: none; 
+    border: none; 
     color: #F0F8FF;
     background:rgba(255,255,255,.1);
 }
@@ -162,8 +163,15 @@ li{
     font-size: 20px;
 }
 
-.HomePage .mainBoard .ProjectInfo .Members{
-    height: 180px;
+.HomePage .mainBoard .ProjectInfo .col-md-6{
+    height: 300px;
+}
+
+
+.HomePage .mainBoard .ProjectInfo .Members,
+.HomePage .mainBoard .ProjectInfo .Tasks{
+    width: 100%;
+    height: 80%;
     border: 2px solid #4AA2CC
 }
 

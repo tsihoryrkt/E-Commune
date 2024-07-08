@@ -5,6 +5,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
 import { FaHourglassStart } from "react-icons/fa";
 import { FaHourglassEnd } from "react-icons/fa";
+import { MdPending, MdPlayArrow, MdDone } from "react-icons/md";
 
 // import assets
 import '../../assets/css/Home.css';
@@ -14,6 +15,7 @@ import conseil from '../../assets/images/conseil-municipal.jpeg'
 import fetchUserData from "../../services/homeService";
 import { searchProject } from "../../services/homeService";
 import { fetchMembers } from "../../services/homeService";
+import { fetchProjectTask } from "../../services/homeService";
 
 const Home = () => {
     const [ userData, setUserData ] = useState(null);
@@ -27,6 +29,8 @@ const Home = () => {
     const [ members, setMembers ] = useState([]);
     const [ startDate, setStartDate ] = useState('');
     const [ endDate, setEndDate ] = useState('');
+
+    const [ projectTask, setProjectTask ] = useState([]);
 
     const [ errorMessage, setErrorMessage ] = useState('');
     const [ showProject, setShowProject ] = useState(false);
@@ -106,22 +110,26 @@ const Home = () => {
             };
         }
     };
-    const handleProjectClick = (project) => {
+
+    const handleProjectClick = async (project) => {
         setId(project._id)
         setName(project.name);
         setDescription(project.description);
         setStartDate(new Date(project.startDate).toISOString().slice(0, 10));
         setEndDate(project.endDate ? new Date(project.endDate).toISOString().slice(0, 10) : '');
 
-        fetchMembersDetails(project.members);
         setShowProject(true);
 
-    }
-    const fetchMembersDetails = async (membersId) => {
         try {
             const token = localStorage.getItem('token');
-            const data = await fetchMembers(token, membersId);
-            setMembers(data);
+
+            // Fetch project members
+            const membersData = await fetchMembers(token, project.members);
+            setMembers(membersData);
+
+            // Fetch project task
+            const taskData = await fetchProjectTask(token, project._id);
+            setProjectTask(taskData);
 
         }
         catch (error) {
@@ -131,9 +139,8 @@ const Home = () => {
                 setErrorMessage('An error occurred. Please try again.');
             }
         };
+
     }
-
-
 
     return (
         <div className="HomePage">
@@ -283,20 +290,48 @@ const Home = () => {
                             <div className="Description rounded-4 p-3 mb-3">
                                 {description}
                             </div>
-                            <h2 className="text-light">Members:</h2>
-                            <div className="Members rounded-3 d-flex flex-wrap justify-content-center overflow-y-auto mb-3">
-                                { members.map(member => (
-                                    <div key={member._id} className="p-2 d-flex align-items-center justify-content-between">
-                                        <div className="text-light d-grid">
-                                            <img 
-                                                src={`${baseUrl}/${member.image}`} 
-                                                alt="" 
-                                                className="rounded-circle mx-auto" 
-                                            />
-                                            <span className="text-center">{member.name}</span>
-                                        </div>
+                            
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <h2 className="text-light">Members:</h2>
+                                    <div className="Members rounded-3 d-flex flex-wrap justify-content-center overflow-y-auto mb-3">
+                                        { members.map(member => (
+                                            <div key={member._id} className="p-2 d-flex align-items-center justify-content-between">
+                                                <div className="text-light d-grid">
+                                                    <img 
+                                                        src={`${baseUrl}/${member.image}`} 
+                                                        alt="" 
+                                                        className="rounded-circle mx-auto" 
+                                                    />
+                                                    <span className="text-center">{member.name}</span>
+                                                </div>
+                                            </div>
+                                        ))}   
                                     </div>
-                                ))}   
+                                </div>
+                                <div className="col-md-6">
+                                    <h2 className="text-light">Tasks:</h2>
+                                    <div className="Tasks rounded-3 p-2 overflow-y-auto">
+                                        {projectTask.length === 0 ? 
+                                            (
+                                                <strong className="text-light">No Task added</strong>
+                                            )
+                                            :
+                                            (
+                                                projectTask.map(task => (
+                                                    <div key={task._id} className="text-start">
+                                                        <div className="mb-1">
+                                                            {task.status === "Pending" && <MdPending style={{ color: '#FF6347', fontSize: '30px' }}/>}
+                                                            {task.status === "In Progress" && <MdPlayArrow style={{ color: '#0D6EFD', fontSize: '30px' }}/>}
+                                                            {task.status === "Completed" && <MdDone style={{ color: '#32CD32', fontSize: '30px' }}/>}
+                                                            <span className="text-light">{" " + task.title}</span>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            )
+                                        }
+                                    </div>
+                                </div>
                             </div>
                             <div className="DateProject d-flex flex-wrap justify-content-around">
 
