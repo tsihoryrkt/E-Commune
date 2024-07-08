@@ -102,4 +102,23 @@ export const fetchProject = async (token, projectId) => {
 
 }
 
+export const fetchProjectTask = async (token, projectId) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        params: {
+            projectId: projectId
+        }
+    };
+    
+    try {
+        const response = await axios.get('http://localhost:5000/task/byProject', config);
+        return response.data;
+    }
+    catch (error){
+        throw error;
+    }
+}
+
 export default fetchUserData;

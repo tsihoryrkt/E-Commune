@@ -166,6 +166,18 @@ li{
     height: 30px;
 }
 
+.ProjectPage .container .EditProject .formDiv form .editWrap .DateAndTask .col-md-6{
+    height: 200px;
+}
+
+.ProjectPage .container .EditProject .formDiv form .editWrap .DateAndTask .TaskList{
+    border: none;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #4AA2CC
+}
+
 
 .ProjectPage .container .AllProject .ProjectList{
     height: 600px;

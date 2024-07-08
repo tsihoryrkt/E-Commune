@@ -107,11 +107,26 @@ const deleteTask = async (req, res) => {
     }
 }
 
+// Endpoint for fetching project task details
+const fetchProjectTask = async (req, res) => {
+    const projectId = req.query.projectId;
+    try {
+        const projectTask = await Task.find({ project: projectId });
+
+        res.send(projectTask);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
 module.exports = {
     upload,
     verifyToken,
     createTask,
     searchTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    fetchProjectTask
 }

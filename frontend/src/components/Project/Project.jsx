@@ -5,12 +5,13 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
+import { MdPending, MdPlayArrow, MdDone } from "react-icons/md";
 
 // import assets
 import '../../assets/css/Project.css';
 
 // import service
-import fetchUserData, { fetchMembers } from "../../services/homeService";
+import fetchUserData, { fetchMembers, fetchProjectTask } from "../../services/homeService";
 import { searchPersonnel } from "../../services/accountService";
 import { createProject } from "../../services/projectService";
 import { searchProject } from "../../services/projectService";
@@ -30,6 +31,8 @@ const Project = () => {
     const [ members, setMembers ] = useState([]);
     const [ startDate, setStartDate ] = useState('');
     const [ endDate, setEndDate ] = useState('');
+
+    const [ projectTask, setProjectTask ] = useState([]);
 
 
     const [errorMessage, setErrorMessage] = useState('');
@@ -217,7 +220,7 @@ const Project = () => {
 
     }
 
-    const handleProjectClick = (project) => {
+    const handleProjectClick = async (project) => {
         setShowEdit(true);
         setId(project._id)
         setName(project.name);
@@ -225,15 +228,16 @@ const Project = () => {
         setStartDate(new Date(project.startDate).toISOString().slice(0, 10));
         setEndDate(project.endDate ? new Date(project.endDate).toISOString().slice(0, 10) : '');
 
-        fetchMembersDetails(project.members);
-
-    }
-
-    const fetchMembersDetails = async (membersId) => {
         try {
             const token = localStorage.getItem('token');
-            const data = await fetchMembers(token, membersId);
-            setMembers(data);
+
+            // Fetch project members
+            const membersData = await fetchMembers(token, project.members);
+            setMembers(membersData);
+
+            // Fetch project task
+            const taskData = await fetchProjectTask(token, project._id);
+            setProjectTask(taskData);
 
         }
         catch (error) {
@@ -244,8 +248,9 @@ const Project = () => {
             }
             setSuccessMessage('');
         };
+
     }
-    
+
     const handleAddProject = () => {
         setShowEdit(false);
         setId('');
@@ -385,13 +390,39 @@ const Project = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="mb-3 text-start">
-                                        <label htmlFor="name" className="">Start Date</label>
-                                        <input type="date" className="form-control rounded-pill" value={startDate}  onChange={(e) => setStartDate(e.target.value)}/>
-                                    </div>
-                                    <div className="text-start">
-                                        <label htmlFor="endDate">End Date</label>
-                                        <input type="date" className="form-control rounded-pill" value={endDate}  onChange={(e) => setEndDate(e.target.value)}/>
+                                    <div className="row DateAndTask">
+                                        <div className="col-md-6 p-2">
+                                            <div className="mb-3">
+                                                <label htmlFor="name" className="">Start Date</label>
+                                                <input type="date" className="form-control rounded-pill" value={startDate}  onChange={(e) => setStartDate(e.target.value)}/>
+                                            </div>
+                                            <div className="">
+                                                <label htmlFor="endDate">End Date</label>
+                                                <input type="date" className="form-control rounded-pill" value={endDate}  onChange={(e) => setEndDate(e.target.value)}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6 p-2">
+                                            <div className="TaskList rounded-3 p-2">
+                                                {projectTask.length === 0 ? 
+                                                    (
+                                                        <strong className="text-light">No Task added</strong>
+                                                    )
+                                                    :
+                                                    (
+                                                        projectTask.map(task => (
+                                                            <div key={task._id} className="text-start">
+                                                                <div className="mb-1">
+                                                                    {task.status === "Pending" && <MdPending style={{ color: '#FF6347', fontSize: '30px' }}/>}
+                                                                    {task.status === "In Progress" && <MdPlayArrow style={{ color: '#0D6EFD', fontSize: '30px' }}/>}
+                                                                    {task.status === "Completed" && <MdDone style={{ color: '#32CD32', fontSize: '30px' }}/>}
+                                                                    <span className="text-light">{" " + task.title}</span>
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    )
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <button type="submit" className="btn btn-lg btn-primary m-3 px-5">Save<MdEdit /></button>
