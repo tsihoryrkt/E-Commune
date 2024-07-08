@@ -3,7 +3,8 @@ const multer = require('multer');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
-const Project = require('../models/Project')
+const Project = require('../models/Project');
+const Task = require('../models/Task');
 
 // Configuration of the multer for images download
 const storage = multer.diskStorage({
@@ -160,7 +161,7 @@ const searchUser = async (req, res) => {
     }
 }
 
-// Endpoint for deleding user
+// Endpoint for deleting user
 const deleteUser = async (req, res) => {
     const userId = req.params.userId;
     console.log('here are e ' + userId);
@@ -172,8 +173,8 @@ const deleteUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        // Remove user from projects
         const project = await Project.find()
-
         if (project){
             await Project.updateMany(
                 { members: userId},
@@ -181,6 +182,18 @@ const deleteUser = async (req, res) => {
             );
             console.log('members removed');
         }
+
+        // Remove user from tasks
+        const task = await Task.find();
+        if (task) {
+            await Task.updateMany(
+                { assignedTo: userId },
+                { $pull: { assignedTo: userId } }
+            );
+            console.log('User removed from tasks');
+        }
+
+        
         await User.findByIdAndDelete(userId);
         res.status(200).json({ message: 'User deleted successfully'});
     }

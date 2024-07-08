@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Project = require('./Project');
+const User = require('./User');
 const Schema = mongoose.Schema;
 
 const TaskSchema = Schema({
@@ -11,4 +12,6 @@ const TaskSchema = Schema({
     dueDate: { type: Date },
 });
 
-module.exports = mongoose.model('Task', TaskSchema);
+const Task = mongoose.model('Task', TaskSchema);
+
+module.exports = Task;

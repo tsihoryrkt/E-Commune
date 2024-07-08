@@ -315,7 +315,8 @@ const Task = () => {
         setTitle(task.title);
         setDescription(task.description || '');
         setDueDate(task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : '');
-        setStatus(task.status);
+        setStatus(task.assignedTo.length === 0 ? 'Pending' : task.status);
+        alert(task.assignedTo);
         
         try {
             const token = localStorage.getItem('token');
