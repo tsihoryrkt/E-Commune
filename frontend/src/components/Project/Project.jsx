@@ -221,7 +221,7 @@ const Project = () => {
         setShowEdit(true);
         setId(project._id)
         setName(project.name);
-        setDescription(project.description);
+        setDescription(project.description || '');
         setStartDate(new Date(project.startDate).toISOString().slice(0, 10));
         setEndDate(project.endDate ? new Date(project.endDate).toISOString().slice(0, 10) : '');
 
@@ -311,14 +311,14 @@ const Project = () => {
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-floating mb-3">
-                                            <input type="text" className="form-control" value={description}  onChange={(e) => setDescription(e.target.value)}/>
-                                            <label htmlFor="name">Description</label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-floating mb-3">
                                             <input type="date" className="form-control" value={endDate}  onChange={(e) => setEndDate(e.target.value)}/>
                                             <label htmlFor="endDate">End Date</label>
+                                        </div>
+                                    </div>
+                                    <div className="">
+                                        <div className="form-floating mb-3">
+                                            <input type="text" className="form-control" value={description}  onChange={(e) => setDescription(e.target.value)}/>
+                                            <label htmlFor="name">Description</label>
                                         </div>
                                     </div>
                                 </div>

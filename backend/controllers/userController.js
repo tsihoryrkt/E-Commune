@@ -192,15 +192,27 @@ const deleteUser = async (req, res) => {
 // Endpoint for fetching members
 const fetchMembers = async (req, res) => {
     const membersId = req.query.membersId;
-    console.log('members e ', membersId);
     try {
         const members = await User.find({
              _id: { $in: membersId } 
         });
 
-        res.send(members)
+        res.send(members);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
+// Endpoint for fetching assignedTo
+const fetchAssignedTo = async (req, res) => {
+    const assignedToId = req.query.assignedToId;
+    try {
+        const assignedTo = await User.find({
+             _id: { $in: assignedToId } 
+        });
 
+        res.send(assignedTo);
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -218,5 +230,6 @@ module.exports = {
     updateUserProfile,
     searchUser,
     deleteUser,
-    fetchMembers
+    fetchMembers,
+    fetchAssignedTo
 }

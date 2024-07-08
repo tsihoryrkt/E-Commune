@@ -165,6 +165,93 @@ li{
     background:rgba(255,255,255,.1);
 
 }
+.hideItems, .hideItems *{
+    opacity: 0;
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
+    margin: 0;
+    padding: 0;
+}
+
+.TaskPage .container .EditTask .formDiv form{
+    width: 600px;
+    /*background: url('../images/york-town-hall.jpg') no-repeat center/cover;*/
+    background: linear-gradient(to top,#4AA2CC,#006FB6,#005EB6, #004FAB, #4AA2CC);
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+    @media (max-width: 768px) {
+        width: 100%; 
+        width: 400px;
+        margin: 0 auto; 
+        padding: 0 20px; 
+    }
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap{
+    width: 100%;
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap .ProjectName{
+    color: #fff;
+    font-weight: 900;
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap input{
+    border: none;
+    background:rgba(255,255,255,.1);
+    color: #F0F8FF;
+    font-weight: 800;
+    font-size: 20px;
+    border: 2px solid #4AA2CC
+}
+.TaskPage .container .EditTask .formDiv form .editWrap input:focus{
+    border: 2px solid white;
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap label{
+    color: #fff;
+    font-size: 20px;
+}
+.TaskPage .container .EditTask .formDiv form .editWrap textarea{
+    background:rgba(255,255,255,.1);
+    border: none;
+    color: #F0F8FF;
+    font-size: 16px;
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap textarea:focus{
+    border: 2px solid white;
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap .MembersProject .col-md-6{
+    height: 200px;
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap .MembersProject .col-md-6 .AssignedTo,
+.TaskPage .container .EditTask .formDiv form .editWrap .MembersProject .col-md-6 .Members{
+    background:rgba(255,255,255,.1);
+    width: 100%;
+    height: 100%;
+    border: none;
+    overflow-y: auto;
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap .MembersProject .col-md-6 img{
+    width: 30px;
+    height: 30px;
+}
+
+.TaskPage .container .EditTask .formDiv form .editWrap select{
+    border: none;
+    background:rgba(255,255,255,.1);
+    color: #F0F8FF;
+    font-weight: 800;
+    font-size: 20px;
+    border: 2px solid #4AA2CC
+}
+.TaskPage .container .EditTask .formDiv form .editWrap select:focus{
+    border: 2px solid white;
+}
 
 .TaskPage .container .AllTask .TaskList{
     height: 600px;
@@ -177,12 +264,10 @@ li{
     background-color: #fff;
     border: 1px solid #ced4da;
     border-radius: 0.5rem;
-    @media (min-width: 768px) {
         width: 100%; 
-        width: 400px;
         margin: 0 auto; 
+        min-width: 350px;
         padding: 0 20px; 
-    }
 }
 
 .TaskPage .container .AllTask .TaskList .input-container input{
@@ -208,3 +293,4 @@ li{
     padding: 0;
     margin: 0;
 }
+

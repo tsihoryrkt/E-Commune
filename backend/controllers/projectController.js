@@ -126,6 +126,19 @@ const searchUserProject = async (req, res) => {
     }
 }
 
+// EndPoint for fetching project details
+const fetchProject = async (req, res) => {
+    const projectId = req.query.projectId;
+    try {
+        const project = await Project.findById(projectId);
+        res.send(project);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
 
 
 module.exports = {
@@ -135,5 +148,6 @@ module.exports = {
     searchProject,
     deleteProject,
     updateProject,
-    searchUserProject
+    searchUserProject,
+    fetchProject
 }

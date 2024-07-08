@@ -62,4 +62,44 @@ export const searchProject = async  (token, searchTerm) => {
     }
 }
 
+export const fetchAssignedTo = async (token, assignedToId) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        params: {
+            assignedToId: assignedToId
+        }
+    }
+
+    try {
+        const response = await axios.get('http://localhost:5000/user/assignedTo', config)
+        return response.data
+    }
+    catch (error){
+        throw error;
+    }
+
+}
+
+export const fetchProject = async (token, projectId) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        params: {
+            projectId: projectId
+        }
+    }
+
+    try {
+        const response = await axios.get('http://localhost:5000/project/projectDetails', config)
+        return response.data
+    }
+    catch (error){
+        throw error;
+    }
+
+}
+
 export default fetchUserData;

@@ -62,9 +62,36 @@ const searchTask = async (req, res) => {
     }
 }
 
+// Endpoint for updating task information
+const updateTask = async (req, res) => {
+    const { taskId } = req.params;
+    const { title, description, assignedTo, status, dueDate } = req.body;
+    const dueDateObject = dueDate ? new Date(dueDate) : null;
+
+    try{
+        const task = await Task.findById(taskId);
+        if(!task){
+            console.log('Project not found for ID ' + projectId);
+            return res.status(404).send({ error: 'Project not found' });
+        }
+        task.title = title || task.title;
+        task.description = description || task.description;
+        task.assignedTo = assignedTo ? JSON.parse(assignedTo) : task.assignedTo;
+        task.status = status || task.status;
+        task.dueDate = dueDateObject || task.dueDate;
+
+        const updatedTask = await task.save();
+        res.status(200).send({ message: 'Task updated successfully', task: updatedTask });
+    }
+    catch(error) {
+        res.status(500).send({ error: 'Internal server error' });
+    };
+}
+
 module.exports = {
     upload,
     verifyToken,
     createTask,
-    searchTask
+    searchTask,
+    updateTask
 }
