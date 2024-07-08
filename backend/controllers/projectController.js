@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 
 const Project = require('../models/Project');
+const Task = require('../models/Task');
 
 
 const upload = multer();
@@ -70,6 +71,9 @@ const deleteProject = async (req, res) => {
         if(!project){
             return res.status(404).json({ message: 'project not found' });
         }
+
+        // Deleting associated task 
+        await Task.deleteMany({ project: projectId });
         
         await Project.findByIdAndDelete(projectId);
         res.status(200).json({ message: 'Project deleted successfully'});
