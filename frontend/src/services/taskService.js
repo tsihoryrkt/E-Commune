@@ -50,3 +50,19 @@ export const updateTask = async (token, formData, taskId) => {
         throw error;
     }
 }
+
+export const deleteTask = async (token, taskId) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    try {
+        const response = await axios.delete(`http://localhost:5000/task/${taskId}`, config);
+        return response.data;
+    }
+    catch (error){
+        throw error;
+    }
+}

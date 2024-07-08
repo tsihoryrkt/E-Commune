@@ -19,6 +19,7 @@ import { searchProject } from "../../services/projectService";
 import { createTask } from "../../services/taskService";
 import { searchTask } from "../../services/taskService";
 import { updateTask } from "../../services/taskService";
+import { deleteTask } from "../../services/taskService";
 
 const Task = () => {
 
@@ -356,6 +357,26 @@ const Task = () => {
         }
     };
 
+    const handleDeleteTask = async (taskId) => {
+        const token = localStorage.getItem('token');
+        setSuccessMessage('');
+        setErrorMessage('');
+
+        try {
+            await deleteTask(token, taskId);
+            setSuccessMessage('Task deleted successfully');
+
+            const allTasks = await searchTask(token, '');
+            setAllTask(allTasks);
+            setSearchTerm('');
+            setSearchResults('');
+            handleAddTask();
+
+        } catch (error) {
+            setErrorMessage(error.response?.data?.message || 'Failed to delete Task');
+            setSuccessMessage('');
+        }
+    }
 
     return (
         <div className="TaskPage">
@@ -703,7 +724,7 @@ const Task = () => {
                                                                 <div>
                                                                     <button 
                                                                         className="btn btn-outline-danger"
-                                                                            
+                                                                        onClick={() => handleDeleteTask(task._id)}    
                                                                     >
                                                                     Delete
                                                                     </button>                                            
@@ -732,7 +753,8 @@ const Task = () => {
                                                             </div>
                                                             <div>
                                                                 <button 
-                                                                    className="btn btn-outline-danger"    
+                                                                    className="btn btn-outline-danger"
+                                                                    onClick={() => handleDeleteTask(task._id)}    
                                                                 >
                                                                 Delete
                                                                 </button>                                            
