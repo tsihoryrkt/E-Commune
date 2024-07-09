@@ -6,6 +6,10 @@ import { FaSearch } from "react-icons/fa";
 import { FaHourglassStart } from "react-icons/fa";
 import { FaHourglassEnd } from "react-icons/fa";
 import { MdPending, MdPlayArrow, MdDone } from "react-icons/md";
+import { FcStatistics } from "react-icons/fc";
+import { GoProject } from "react-icons/go";
+import { GoTasklist } from "react-icons/go";
+import { FaUsers } from "react-icons/fa";
 
 // import assets
 import '../../assets/css/Home.css';
@@ -17,6 +21,7 @@ import { searchProject } from "../../services/homeService";
 import { fetchMembers } from "../../services/homeService";
 import { fetchProjectTask } from "../../services/homeService";
 import { searchTask } from "../../services/homeService";
+import { fetchProjectCount, fetchUserCount, fetchTaskStats } from "../../services/homeService";
 
 const Home = () => {
     const [ userData, setUserData ] = useState(null);
@@ -49,6 +54,16 @@ const Home = () => {
     const [MyTasks, setMyTasks] = useState([]);
     const [showTaskSearchResult, setShowTaskSearchResult] = useState(false);
 
+    // For statistics
+    const [projectCount, setProjectCount] = useState('');
+    const [userCount, setUserCount] = useState(0);
+    const [taskStats, setTaskStats] = useState({
+        totalTasks: 0,
+        pendingTasks: 0,
+        inProgerssTasks: 0,
+        completedTasks: 0,
+    });
+
     useEffect(() => {
         const getUserData = async () => {
             const token = localStorage.getItem('token');
@@ -68,6 +83,15 @@ const Home = () => {
 
                 const allTask = await searchTask(token, '');
                 setMyTasks(allTask);
+
+                const projectC = await fetchProjectCount();
+                setProjectCount(projectC);
+
+                const userC = await fetchUserCount();
+                setUserCount(userC);
+
+                const taskS = await fetchTaskStats();
+                setTaskStats(taskS);
             }
             catch (error) {
  
@@ -388,7 +412,7 @@ const Home = () => {
                     </div>
 
                     <div className="col-md-3">
-                        <div className="pt-4 pb-4 MyTask">
+                        <div className="pt-4 MyTask">
                             <h1 className="mb-3">My Task</h1>
                             <div className="mt-3 MyTaskList rounded-3 mt-3 mx-3 p-4 overflow-y-auto">
                                 <div className="rounded-3 sticky-top d-flex align-items-center justify-content-between input-container">
@@ -472,8 +496,20 @@ const Home = () => {
                             </div>
                         </div>
 
-                        <div className="pt-4 pb-4 overflow-auto">
-                            <h6 className="mb-3">Statistics</h6>
+                        <div className="pt-4">
+                            <div className="Stat">
+                                <h1 className="mb-3"><FcStatistics /> Statistics</h1>
+                                <div className="mt-3 Statistics rounded-3 mt-3 mx-3 p-4">
+                                    <div className="GlobalStat text-start p-4 overflow-y-auto text-light">
+                                        <p><span><GoProject style={{ color: '#32CD32', fontSize: '30px' }}/> Projects: </span> <span style={{ color: '#32CD32', fontSize: '20px' }}>{projectCount.projectCount}</span></p>
+                                        <p><span><FaUsers style={{ color: '#FFFF00', fontSize: '30px' }}/> Personnel: </span> <span style={{ color: '#FFFF00', fontSize: '20px' }}>{userCount.userCount}</span></p>
+                                        <p><span><GoTasklist style={{ color: '#FF00FF', fontSize: '30px' }}/> Tasks: </span> <span style={{ color: '#FF00FF', fontSize: '20px' }}>{taskStats.totalTasks}</span></p>
+                                        <p><span><MdPending style={{ color: '#FF6347', fontSize: '30px' }}/> Pending: </span> <span style={{ color: '#FF6347', fontSize: '20px' }}>{taskStats.pendingTasks}</span></p>
+                                        <p><span><MdPlayArrow style={{ color: 'blue', fontSize: '30px' }}/> In Progress: </span> <span style={{ color: 'blue', fontSize: '20px' }}>{taskStats.inProgerssTasks}</span></p>
+                                        <p><span><MdDone style={{ color: '#32CD32', fontSize: '30px' }}/> Completed: </span> <span style={{ color: '#32CD32', fontSize: '20px' }}>{taskStats.completedTasks}</span></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

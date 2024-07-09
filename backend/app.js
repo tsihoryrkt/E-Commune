@@ -13,6 +13,7 @@ const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const projectRouter = require('./routes/project');
 const taskRouter = require('./routes/task');
+const statisticsRouter = require('./routes/statistics');
 
 // Middleware
 app.use(bodyParser.json()); // analysing the request body
@@ -31,5 +32,6 @@ app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/project', projectRouter);
 app.use('/task', taskRouter);
+app.use('/statistics', statisticsRouter);
 
 module.exports = app;

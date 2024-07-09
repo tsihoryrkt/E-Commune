@@ -139,5 +139,36 @@ export const searchTask = async  (token, searchTerm) => {
     }
 }
 
+export const fetchProjectCount = async () => {
+    try{
+        const response = await axios.get('http://localhost:5000/statistics/projects/count');
+        return response.data;
+    }
+    catch (error){
+        throw error;
+    } 
+}
+
+export const fetchUserCount = async () => {
+    try{
+        const response = await axios.get('http://localhost:5000/statistics/users/count');
+        return response.data;
+    }
+    catch (error){
+        throw error;
+    } 
+}
+
+
+export const fetchTaskStats = async () => {
+    try{
+        const response = await axios.get('http://localhost:5000/statistics/tasks/stats');
+        return response.data;
+    }
+    catch (error){
+        throw error;
+    }
+}
+
 
 export default fetchUserData;

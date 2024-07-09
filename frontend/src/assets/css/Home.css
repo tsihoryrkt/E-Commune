@@ -231,5 +231,20 @@ li{
     border: none;
 }
 
+.HomePage .Stat .Statistics{
+    height: 300px;
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);    
+    background: linear-gradient(to top,#4AA2CC,#006FB6,#005EB6, #004FAB, #4AA2CC);
+}
 
+.HomePage .Statistics .GlobalStat{
+    height: 100%;
+    background:rgba(255,255,255,.1);
+    border-radius: 0.5rem;
+    font-size: 16px;         
+}
 
+.HomePage .Statistics .GlobalStat p{
+    display: flex;
+    justify-content: space-between;
+}
