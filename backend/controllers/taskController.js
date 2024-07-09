@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 
 const Task = require('../models/Task');
+const { title } = require('process');
 
 const upload = multer();
 
@@ -47,7 +48,6 @@ const createTask = async (req,res) => {
 // Endpoint for searching task
 const searchTask = async (req, res) => {
     const searchTerm = req.query.searchTerm;
-    console.log('task mitady')
     try{
         const task = await Task.find({
             $or: [
@@ -120,6 +120,25 @@ const fetchProjectTask = async (req, res) => {
     }
 }
 
+// Endpoint for searching user task
+const searchUserTask = async (req, res) => {
+    const userId = req.userId
+    const searchTerm = req.query.searchTerm;
+    try{
+        const task = await Task.find({
+            assignedTo: userId,
+            $or: [
+                { title: { $regex: searchTerm, $options: 'i' } },
+                { description: { $regex: searchTerm, $options: 'i' } }
+            ]
+        });
+        res.send(task);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 
 module.exports = {
     upload,
@@ -128,5 +147,6 @@ module.exports = {
     searchTask,
     updateTask,
     deleteTask,
-    fetchProjectTask
+    fetchProjectTask,
+    searchUserTask
 }

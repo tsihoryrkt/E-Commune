@@ -179,3 +179,57 @@ li{
     width: 50px;
     height: 50px;
 }
+
+.HomePage .MyTask .MyTaskList{
+    height: 350px;
+    box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);    
+    background: linear-gradient(to top,#4AA2CC,#006FB6,#005EB6, #004FAB, #4AA2CC);
+}
+
+.HomePage .MyTask .MyTaskList .input-container{
+    background:rgba(255,255,255,.1);
+    border-radius: 0.5rem;         
+}
+
+.HomePage .MyTask .MyTaskList .input-container input{
+    border: none;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    position: relative;
+}
+
+.HomePage .MyTask .MyTaskList .input-container input:focus{
+    border: 2px solid white;    
+}
+
+.HomePage .MyTask .MyTaskList .input-container .search-button{
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.HomePage .MyTask .MyTaskList .list-group > div{
+    background:rgba(255,255,255,.1);
+    border: none;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.HomePage .MyTask .MyTaskList .list-group > div:hover{
+    background:rgba(255,255,255,.3);
+    border: 2px solid white;
+}
+
+.HomePage .MyTask .MyTaskList .list-group > div div{
+    background: none;
+    color: #F0F8FF;
+    border: none;
+}
+
+
+

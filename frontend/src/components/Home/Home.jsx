@@ -16,6 +16,7 @@ import fetchUserData from "../../services/homeService";
 import { searchProject } from "../../services/homeService";
 import { fetchMembers } from "../../services/homeService";
 import { fetchProjectTask } from "../../services/homeService";
+import { searchTask } from "../../services/homeService";
 
 const Home = () => {
     const [ userData, setUserData ] = useState(null);
@@ -42,6 +43,11 @@ const Home = () => {
     const [MyProjects, setMyProjects] = useState([]);
     const [showSearchResult, setShowSearchResult] = useState(false);
 
+    // For searching task
+    const [taskSearchTerm, setTaskSearchTerm] = useState('');
+    const [taskSearchResults, setTaskSearchResults] = useState('');
+    const [MyTasks, setMyTasks] = useState([]);
+    const [showTaskSearchResult, setShowTaskSearchResult] = useState(false);
 
     useEffect(() => {
         const getUserData = async () => {
@@ -59,6 +65,9 @@ const Home = () => {
             
                 const allProjetcs = await searchProject(token, '');
                 setMyProjects(allProjetcs);
+
+                const allTask = await searchTask(token, '');
+                setMyTasks(allTask);
             }
             catch (error) {
  
@@ -141,6 +150,34 @@ const Home = () => {
         };
 
     }
+
+    const HandleSearchTask = async (event) => {
+        if(event.key === 'Enter' || event.type === 'click') {
+            event.preventDefault();
+            
+            try {
+                const token = localStorage.getItem('token');
+                const results = await searchTask(token, taskSearchTerm);
+                setTaskSearchResults(results);
+                setShowTaskSearchResult(false);
+            }
+            catch (error) {
+                setErrorMessage('Error searching Task: ', error);
+            };
+        }
+        else{
+            try {
+                const token = localStorage.getItem('token');
+                const results = await searchTask(token, taskSearchTerm);
+                setTaskSearchResults(results);
+                setShowTaskSearchResult(true);
+            }
+            catch (error) {
+                setErrorMessage('Error searching Task: ', error);
+            };
+        }
+    };
+
 
     return (
         <div className="HomePage">
@@ -351,9 +388,88 @@ const Home = () => {
                     </div>
 
                     <div className="col-md-3">
-                        <div className="pt-4 pb-4 overflow-auto">
-                            <h6 className="mb-3">My Task</h6>
-
+                        <div className="pt-4 pb-4 MyTask">
+                            <h1 className="mb-3">My Task</h1>
+                            <div className="mt-3 MyTaskList rounded-3 mt-3 mx-3 p-4 overflow-y-auto">
+                                <div className="rounded-3 sticky-top d-flex align-items-center justify-content-between input-container">
+                                    <input 
+                                            type="text" 
+                                            name="search_user" 
+                                            className="search-input rounded-3"
+                                            placeholder="Search Task"
+                                            value={taskSearchTerm}
+                                            onChange={(e) => setTaskSearchTerm(e.target.value)}
+                                            onKeyDown={HandleSearchTask}
+                                    />
+                                    <button className="search-button">
+                                        <FaSearch className="icon"/>
+                                    </button>
+                                </div>
+                                <div className="mt-3 list-group">
+                                    {taskSearchTerm?(
+                                        taskSearchResults.length === 0 ? 
+                                        (
+                                                <strong className="text-light">No task found</strong>
+                                        )
+                                        :
+                                        (
+                                            showTaskSearchResult ? (
+                                                taskSearchResults.map(task => (
+                                                    <div key={task._id} className="text-light">
+                                                        <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                            <div className="d-flex align-items-center justify-content-between">
+                                                                <div className="mb-1">
+                                                                    {task.title}
+                                                                </div>                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            )
+                                            :
+                                            (taskSearchResults.map(task => (
+                                                <div>
+                                                    <div key={task._id}>
+                                                        <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                            <div className="d-flex align-items-center justify-content-between">
+                                                                <div className="mb-1">
+                                                                    {task.status === "Pending" && <MdPending style={{ color: '#FF6347', fontSize: '30px' }}/>}
+                                                                    {task.status === "In Progress" && <MdPlayArrow style={{ color: '#0D6EFD', fontSize: '30px' }}/>}
+                                                                    {task.status === "Completed" && <MdDone style={{ color: '#32CD32', fontSize: '30px' }}/>}
+                                                                    {" " + task.title}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            )
+                                            )
+                                            )
+                                        )
+                                    )
+                                    :
+                                    (
+                                        MyTasks.map(task => (
+                                            <div>
+                                                <div key={task._id}>
+                                                    <div className="list-group-item list-group-item-action user-list-item rounded-3">                                            
+                                                        <div className="d-flex align-items-center justify-content-between">
+                                                            <div className="mb-1">
+                                                                {task.status === "Pending" && <MdPending style={{ color: '#FF6347', fontSize: '30px'}}/>}
+                                                                {task.status === "In Progress" && <MdPlayArrow style={{ color: '#0D6EFD', fontSize: '30px' }}/>}
+                                                                {task.status === "Completed" && <MdDone style={{ color: '#32CD32', fontSize: '30px' }}/>}
+                                                                {" " + task.title}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )
+                                    }
+                                </div>
+                            </div>
                         </div>
 
                         <div className="pt-4 pb-4 overflow-auto">
