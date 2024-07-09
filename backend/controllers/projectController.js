@@ -96,6 +96,9 @@ const updateProject = async (req, res) => {
             console.log('Project not found for ID ' + projectId);
             return res.status(404).send({ error: 'Project not found' });
         }
+
+        const oldMembers = project.members.map(member => member.toString());
+
         project.name = name || project.name;
         project.description = description || project.description;
         project.members = members ? JSON.parse(members) : project.members;
@@ -103,6 +106,21 @@ const updateProject = async (req, res) => {
         project.endDate = endDateObject || project.endDate;
 
         const updatedProject = await project.save();
+
+        const newMembers = updatedProject.members.map(member => member.toString());
+        const removedMembers = oldMembers.filter(member => !newMembers.includes(member));
+
+        if (removedMembers.length > 0) {
+            // Find tasks associated with the project
+            const tasks = await Task.find({ project: projectId });
+
+            for (const task of tasks) {
+                // Remove the removed members from the task's assignedTo field
+                task.assignedTo = task.assignedTo.filter(assignedMember => !removedMembers.includes(assignedMember.toString()));
+                await task.save();
+            }
+        }
+
         res.status(200).send({ message: 'Project updated successfully', project: updatedProject });
     }
     catch(error) {
